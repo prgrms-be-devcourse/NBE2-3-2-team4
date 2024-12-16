@@ -1,6 +1,5 @@
 package com.team4.ttukttak_parking.domain.member.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;

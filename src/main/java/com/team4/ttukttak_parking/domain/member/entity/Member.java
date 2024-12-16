@@ -2,7 +2,6 @@ package com.team4.ttukttak_parking.domain.member.entity;
 
 import com.team4.ttukttak_parking.domain.member.entity.enums.LoginTypes;
 import com.team4.ttukttak_parking.domain.member.entity.enums.MemberRoles;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
