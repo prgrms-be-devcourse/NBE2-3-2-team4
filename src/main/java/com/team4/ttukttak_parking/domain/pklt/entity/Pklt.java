@@ -26,9 +26,9 @@ public class Pklt {
     private String pkltNm;
     private String addr;
 
-    @Column(precision = 16, scale = 14, nullable = false)
+    @Column(precision = 16, scale = 10, nullable = false)
     private BigDecimal lat;
 
-    @Column(precision = 16, scale = 14, nullable = false)
+    @Column(precision = 16, scale = 10, nullable = false)
     private BigDecimal lot;
 }
