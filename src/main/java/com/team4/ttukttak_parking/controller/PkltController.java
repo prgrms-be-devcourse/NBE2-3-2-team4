@@ -1,5 +1,6 @@
 package com.team4.ttukttak_parking.controller;
 
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
@@ -30,5 +31,10 @@ public class PkltController {
     @GetMapping("/{pkltId}")
     public ResponseEntity<ApiResponse<PkltResponse>> getParkingLots(@PathVariable Long pkltId) {
         return ResponseEntity.ok().body(ApiResponse.createSuccess(pkltService.getParkingLots(pkltId)));
+    }
+
+    @GetMapping("/{pkltId}/info")
+    public ResponseEntity<ApiResponse<PkltInfoResponse>> getParkingLotInfo(@PathVariable Long pkltId) {
+        return ResponseEntity.ok().body(ApiResponse.createSuccess(pkltService.getParkingLotInfo(pkltId)));
     }
 }
