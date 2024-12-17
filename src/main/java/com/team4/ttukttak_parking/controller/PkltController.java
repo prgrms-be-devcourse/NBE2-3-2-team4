@@ -23,4 +23,11 @@ public class PkltController {
     public ResponseEntity<ApiResponse<PkltResponse>> getParkingLots(@PathVariable Long pkltId) {
         return ResponseEntity.ok().body(ApiResponse.createSuccess(pkltService.getParkingLots(pkltId)));
     }
+
+    //주차장 잔여 자리 조회
+    @GetMapping("/{pkltId}/status")
+    public ResponseEntity<PkltResponse> getParkingLotStatus(@PathVariable Long pkltId) {
+        PkltResponse pkltResponse=pkltService.getParkingLotsStatus(pkltId);
+        return ResponseEntity.ok(pkltResponse);
+    }
 }
