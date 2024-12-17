@@ -46,18 +46,17 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updateAt;
 
-    /*@Builder
-    public Member(Long memberId, String email, String password, String name, String contact, String role, String loginType, LocalDateTime createdAt, LocalDateTime updateAt) {
+    @Builder
+    public Member( String email, String password, String name, String contact, MemberRoles role, LoginTypes loginType, LocalDateTime createdAt, LocalDateTime updateAt) {
 
-        this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.name = name;
         this.contact = contact;
-        this.EnumType.STRING = role;
+        this.role = role;
         this.loginType = loginType;
         this.createdAt = createdAt;
         this.updateAt = updateAt;
 
-    }*/
+    }
 }

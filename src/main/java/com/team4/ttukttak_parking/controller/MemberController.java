@@ -1,7 +1,8 @@
 package com.team4.ttukttak_parking.controller;
 
+import com.team4.ttukttak_parking.domain.member.dto.MemberResponseDto;
 import com.team4.ttukttak_parking.domain.member.entity.Member;
-import com.team4.ttukttak_parking.domain.member.entity.MemberDTO;
+import com.team4.ttukttak_parking.domain.member.dto.MemberRequestDto;
 import com.team4.ttukttak_parking.domain.member.service.MemberService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,9 +27,9 @@ public class MemberController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
     })
     @PostMapping("/join")
-    public ResponseEntity<ApiResponse<MemberDTO.ResponseJoinDTO>> joinUser(@RequestBody Member member ) throws Exception {
+    public ResponseEntity<ApiResponse<MemberResponseDto.Join>> joinUser(@RequestBody MemberRequestDto.Join dto ) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                ApiResponse.createSuccess( memberService.join(member) ));
+                ApiResponse.createSuccess( memberService.join(dto) ));
     }
 
 }
