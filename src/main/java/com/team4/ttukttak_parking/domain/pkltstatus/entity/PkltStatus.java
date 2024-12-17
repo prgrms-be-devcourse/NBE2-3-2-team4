@@ -1,5 +1,6 @@
 package com.team4.ttukttak_parking.domain.pkltstatus.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -13,6 +14,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -20,6 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -39,4 +42,12 @@ public class PkltStatus {
 
     @LastModifiedDate
     private LocalDateTime nowPrkVhclUpdtTm; // 현재 주차 차량 업데이트 시간
+
+    public static PkltStatus toEntity(JsonNode data, Pklt pklt) {
+        return PkltStatus.builder()
+            .pklt(pklt)
+            .tpkct(data.get("tpkct").asInt())
+            .nowPrkVhclCnt(data.get("now_prk_vhcl_cnt").asInt())
+            .build();
+    }
 }
