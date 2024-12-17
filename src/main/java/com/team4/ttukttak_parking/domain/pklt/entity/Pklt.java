@@ -35,7 +35,7 @@ public class Pklt {
     @Column(precision = 16, scale = 10, nullable = false)
     private BigDecimal lot;
 
-    public static Pklt toEntity(JsonNode data) {
+    public static Pklt to(JsonNode data) {
         return Pklt.builder()
             .pkltNm(data.asText("pklt_nm"))
             .addr(data.get("addr").asText())

@@ -29,11 +29,11 @@ public class AdminService {
         JsonNode dataArray = root.get("DATA");
 
         for (JsonNode data : dataArray) {
-            Pklt pklt = Pklt.toEntity(data);
+            Pklt pklt = Pklt.to(data);
             pkltRepository.save(pklt);
-            PkltInfo pkltInfo = PkltInfo.toEntity(data, pklt);
+            PkltInfo pkltInfo = PkltInfo.to(data, pklt);
             pkltInfoRepository.save(pkltInfo);
-            PkltStatus pkltStatus = PkltStatus.toEntity(data, pklt);
+            PkltStatus pkltStatus = PkltStatus.to(data, pklt);
             pkltStatusRepository.save(pkltStatus);
         }
 

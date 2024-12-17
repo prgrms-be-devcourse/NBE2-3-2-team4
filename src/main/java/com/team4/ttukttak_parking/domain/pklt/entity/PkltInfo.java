@@ -41,7 +41,7 @@ public class PkltInfo {
     private int addPrkHr;           // 추가 단위 시간(분 단위)
     private int dayMaxCrg;          // 일 최대 요금
 
-    public static PkltInfo toEntity(JsonNode data, Pklt pklt) {
+    public static PkltInfo to(JsonNode data, Pklt pklt) {
         return PkltInfo.builder()
             .pkltCd(data.get("pklt_cd").asLong())
             .pklt(pklt)

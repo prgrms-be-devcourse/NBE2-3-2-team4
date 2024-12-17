@@ -1,8 +1,8 @@
-package com.team4.ttukttak_parking.domain.pkltstatus.entity;
+package com.team4.ttukttak_parking.domain.ticket.entity;
 
+import com.team4.ttukttak_parking.domain.member.entity.Member;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.enums.ParkingStatus;
-import com.team4.ttukttak_parking.domain.ticket.entity.TicketOrder;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -28,29 +27,32 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "pklt_status_details")
-public class PkltStatusDetail {
+@Table(name = "ticket_orders")
+public class TicketOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pkltStatusDetailId;
+    private Long ticketOrderId;
+
+    private String carNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ticket_id", nullable = false)
+    private Ticket ticket;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @ManyToOne
     @JoinColumn(name = "pklt_id", nullable = false)
     private Pklt pklt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_id")
-    private TicketOrder ticketOrder;
-
-    private String carNum;
-    private int lateFee;
+    @Enumerated(EnumType.STRING)
+    private ParkingStatus status;
 
     @CreatedDate
     private LocalDateTime startTime;
 
-    private LocalDateTime endTime;
 
-    @Enumerated(EnumType.STRING)
-    private ParkingStatus status;
 }
