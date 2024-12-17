@@ -1,32 +1,27 @@
 package com.team4.ttukttak_parking.domain.ticket.entity;
 
-import com.team4.ttukttak_parking.domain.member.entity.Member;
-import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
-import com.team4.ttukttak_parking.domain.pklt.entity.enums.ParkingStatus;
+import com.team4.ttukttak_parking.domain.ticket.dto.TicketRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 @Table(name = "tickets")
 public class Ticket {
 
@@ -34,23 +29,17 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ticketId;
 
-    private String carNum;
-    private int pkDuration;
     private int price;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "pklt_id", nullable = false)
-    private Pklt pklt;
-
-    @Enumerated(EnumType.STRING)
-    private ParkingStatus status;
+    private int pkDuration;
 
     @CreatedDate
-    private LocalDateTime startTime;
+    private LocalDateTime createdAt;
 
+    public static Ticket to(TicketRequestDto.Create dto) {
+        return Ticket.builder()
+            .price(dto.price())
+            .pkDuration(dto.pkDuration())
+            .build();
+    }
 
 }
