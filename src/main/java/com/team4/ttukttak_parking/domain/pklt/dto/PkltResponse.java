@@ -16,6 +16,8 @@ public class PkltResponse {
     private String address;
     private BigDecimal latitude ;
     private BigDecimal longitude;
+    private int availableSpots; //잔여 자리 수
+    private int usedSpots;//현재 사용 중인 자리 수
 
     @Builder
     public PkltResponse(Long pkltId, String pkltName, String address, BigDecimal latitude, BigDecimal longitude) {
