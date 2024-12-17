@@ -18,13 +18,17 @@ public class PkltResponse {
     private BigDecimal longitude;
     private int availableSpots; //잔여 자리 수
     private int usedSpots;//현재 사용 중인 자리 수
+    private int totalSpots;//총 주차장 자리 수
 
     @Builder
-    public PkltResponse(Long pkltId, String pkltName, String address, BigDecimal latitude, BigDecimal longitude) {
+    public PkltResponse(Long pkltId, String pkltName, String address, BigDecimal latitude, BigDecimal longitude, int availableSpots, int usedSpots, int totalSpots) {
         this.pkltId = pkltId;
         this.pkltName = pkltName;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.availableSpots = availableSpots;
+        this.usedSpots = usedSpots;
+        this.totalSpots = totalSpots;
     }
 }
