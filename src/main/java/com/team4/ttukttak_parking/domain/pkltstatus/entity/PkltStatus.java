@@ -43,7 +43,7 @@ public class PkltStatus {
     @LastModifiedDate
     private LocalDateTime nowPrkVhclUpdtTm; // 현재 주차 차량 업데이트 시간
 
-    public static PkltStatus toEntity(JsonNode data, Pklt pklt) {
+    public static PkltStatus to(JsonNode data, Pklt pklt) {
         return PkltStatus.builder()
             .pklt(pklt)
             .tpkct(data.get("tpkct").asInt())
