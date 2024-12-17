@@ -39,6 +39,10 @@ dependencies {
 
     // MariaDB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    // Swagger UI
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
 }
 
 tasks.named('test') {
