@@ -26,6 +26,16 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 중복 체크
+    @ExceptionHandler(DuplicateAccountException.class)
+    public ResponseEntity<ApiResponse<Object>> handleDuplicateAccountException(DuplicateAccountException e) {
+        log.error("[DuplicateAccountException] message: {}", e.getMessage());
+        ErrorCode errorCode = ErrorCode.USER_ALREADY_EXIST;
+        return ResponseEntity.status(errorCode.getStatus())
+                .body(ApiResponse.createError(errorCode.getMessage()));
+    }
+
+
     // validation 체크
     private String bindingResultErrorsCheck(BindingResult bindingResult) {
         Map<String, String> errorMap = new HashMap<>();

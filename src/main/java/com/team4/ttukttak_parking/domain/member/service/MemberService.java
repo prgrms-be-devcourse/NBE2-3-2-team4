@@ -3,6 +3,7 @@ package com.team4.ttukttak_parking.domain.member.service;
 import com.team4.ttukttak_parking.domain.member.entity.Member;
 import com.team4.ttukttak_parking.domain.member.entity.MemberDTO;
 import com.team4.ttukttak_parking.domain.member.repository.MemberRepository;
+import com.team4.ttukttak_parking.global.exception.DuplicateAccountException;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class MemberService {
 
     public MemberDTO.ResponseJoinDTO join(Member member) {
         // ID 유효성 체크
-        if (!emailValidCheck(member.getEmail())) {
-
+        if (!emailDupicationCheck(member.getEmail())) {
+            throw new DuplicateAccountException("이메일이 중복 되었습니다.");
         }
 
         Member newMember = memberRepository.save(member);
@@ -31,14 +32,14 @@ public class MemberService {
         return responseJoinDTO;
     }
 
-    public boolean emailValidCheck(String email) {
+    public boolean emailDupicationCheck(String email) {
         long count = memberRepository.countByEmail(email);
         if (count > 0) {
-
+            return false ;
+        }else{
+            return true;
         }
 
-
-        return false;
     }
 
 }
