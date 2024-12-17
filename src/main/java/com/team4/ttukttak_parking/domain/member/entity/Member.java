@@ -11,10 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -47,4 +45,18 @@ public class Member {
 
     @LastModifiedDate
     private LocalDateTime updateAt;
+
+    @Builder
+    public Member( String email, String password, String name, String contact, MemberRoles role, LoginTypes loginType, LocalDateTime createdAt, LocalDateTime updateAt) {
+
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.contact = contact;
+        this.role = role;
+        this.loginType = loginType;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+
+    }
 }
