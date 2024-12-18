@@ -29,12 +29,12 @@ public class HolidayItemDTO {
     @XmlElement(name = "locdate")
     public void setLocdate(String locdate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        this.localDate = LocalDate.parse(locdate, formatter);;
+        this.localDate = LocalDate.parse(locdate, formatter);
     }
 
     @XmlElement(name = "isHoliday")
     public void setIsHoliday(String isHoliday) {
-        this.holidayFlag = isHoliday.equals("Y") ? true : false;
+        this.holidayFlag = isHoliday.equals("Y");
     }
 }
 
