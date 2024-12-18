@@ -15,12 +15,12 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +33,7 @@ public class PkltController {
 
     @Operation(summary = "주차장 정보 조회 API", description = "주차장 정보를 조회합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
-    })
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}")
     public ResponseEntity<ApiResponse<PkltResponse.Read>> getParkingLots(
         @PathVariable Long pkltId) {
@@ -45,8 +44,7 @@ public class PkltController {
 
     @Operation(summary = "좌표 근처 주차장 정보 조회 API", description = "좌표 근처 주차장 정보를 조회합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
-    })
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<PkltResponse.ReadNearby>>> getParkingLots(
         @Parameter(description = "위도") @RequestParam(value = "lat") BigDecimal lat,
@@ -58,18 +56,17 @@ public class PkltController {
 
     @Operation(summary = "주차장 상세 정보 조회 API", description = "주차장 상세 정보를 조회합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
-    })
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}/info")
     public ResponseEntity<ApiResponse<PkltInfoResponse.Read>> getParkingLotInfo(
         @PathVariable Long pkltId) {
-        return ResponseEntity.ok().body(ApiResponse.createSuccess(pkltService.getParkingLotInfo(pkltId)));
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(pkltService.getParkingLotInfo(pkltId)));
     }
 
     @Operation(summary = "주차장 잔여 자리 조회 API", description = "주차장 잔여 자리를 조회합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
-    })
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}/status")
     public ResponseEntity<PkltStatusResponse.Read> getParkingLotStatus(@PathVariable Long pkltId) {
         return ResponseEntity.ok().body(pkltService.getParkingLotsStatus(pkltId));
@@ -77,13 +74,11 @@ public class PkltController {
 
     @Operation(summary = "비회원 주차 API", description = "주차장 잔여 자리가 존재할 시 비회원 주차를 진행합니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
-    })
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @PutMapping("/{pkltId}/parking")
     public ResponseEntity<ApiResponse<PkltStatusDetailsResponse.Read>> reserveGuestParking(
-            @PathVariable Long pkltId,
-            @RequestParam String carNum
-    ) {
-        return ResponseEntity.ok().body(ApiResponse.createSuccess(pkltService.reserveGuestParking(pkltId, carNum)));
+        @PathVariable Long pkltId, @RequestParam String carNum) {
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(pkltService.reserveGuestParking(pkltId, carNum)));
     }
 }

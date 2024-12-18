@@ -18,6 +18,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  graphql:
+    cors:
+      allowed-origins: ${FRONTEND_URL}
 springdoc:
   use-fqn: true
   swagger-ui:
