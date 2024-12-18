@@ -3,7 +3,6 @@ package com.team4.ttukttak_parking.domain.member.entity;
 import com.team4.ttukttak_parking.domain.member.entity.enums.LoginTypes;
 import com.team4.ttukttak_parking.domain.member.entity.enums.MemberRoles;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 import lombok.*;
@@ -12,7 +11,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,7 +38,7 @@ public class Member {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateAt;
 
     @Builder
     public Member( String email, String password, String name, String contact, MemberRoles role, LoginTypes loginType, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -52,16 +50,12 @@ public class Member {
         this.role = role;
         this.loginType = loginType;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.updateAt = updateAt;
 
     }
 
-
-    public void updateMember(String name, String email, String contact, String password) {
+    public void updateMember(String name, String contact) {
         this.name = name;
-        this.email = email;
         this.contact = contact;
-        this.password = password;
     }
-
 }
