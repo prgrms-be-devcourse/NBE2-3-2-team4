@@ -59,4 +59,9 @@ public class Member {
         this.updateAt = updateAt;
 
     }
+
+    public void updateMember(String name, String contact) {
+        this.name = name;
+        this.contact = contact;
+    }
 }
