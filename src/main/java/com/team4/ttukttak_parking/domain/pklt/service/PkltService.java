@@ -2,10 +2,13 @@ package com.team4.ttukttak_parking.domain.pklt.service;
 
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltInfoRepository;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltRepository;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
+import com.team4.ttukttak_parking.domain.pkltstatus.repository.PkltStatusRepository;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.math.BigDecimal;
@@ -24,6 +27,7 @@ public class PkltService {
 
     private final PkltRepository pkltRepository;
     private final PkltInfoRepository pkltInfoRepository;
+    private final PkltStatusRepository pkltStatusRepository;
 
     @Transactional(readOnly = true)
     public PkltResponse.Read getParkingLots(Long pkltId) {
@@ -77,5 +81,23 @@ public class PkltService {
             .map(PkltResponse.ReadNearby::from).collect(Collectors.toList());
     }
 
+
+    @Transactional(readOnly = true)
+    public PkltStatusResponse.Read getParkingLotsStatus(Long pkltId) {
+        Pklt pklt = pkltRepository.findById(pkltId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        PkltStatus pkltStatus = pkltStatusRepository.findByPklt(pklt)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        int availableSpots = pkltStatus.getTpkct() - pkltStatus.getNowPrkVhclCnt();
+
+        return PkltStatusResponse.Read.builder()
+            .pkltId(pklt.getPkltId())
+            .availableSpots(availableSpots)
+            .usedSpots(pkltStatus.getNowPrkVhclCnt())
+            .totalSpots(pkltStatus.getTpkct())
+            .build();
+    }
 
 }
