@@ -50,8 +50,9 @@ public class AdminController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/pklt")
-    public ResponseEntity<List<PkltResponse.GetList>> getPkltAllList() {
-        return ResponseEntity.ok().body(adminService.getLists());
+    public ResponseEntity<ApiResponse<List<PkltResponse.GetList>>> getPkltAllList() {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse.createSuccess(adminService.getLists()));
 
     }
 
