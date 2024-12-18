@@ -2,7 +2,6 @@ package com.team4.ttukttak_parking.controller;
 
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
-import com.team4.ttukttak_parking.domain.pklt.dto.PkltSimpleDto;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
@@ -36,7 +35,8 @@ public class PkltController {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/{pkltId}")
-    public ResponseEntity<ApiResponse<PkltResponse>> getParkingLots(@PathVariable Long pkltId) {
+    public ResponseEntity<ApiResponse<PkltResponse.Read>> getParkingLots(
+        @PathVariable Long pkltId) {
         return ResponseEntity.ok()
             .body(ApiResponse.createSuccess(pkltService.getParkingLots(pkltId)));
     }
@@ -47,16 +47,16 @@ public class PkltController {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<PkltSimpleDto>>> getParkingLots(
+    public ResponseEntity<ApiResponse<List<PkltResponse.ReadNearby>>> getParkingLots(
         @Parameter(description = "위도") @RequestParam(value = "lat") BigDecimal lat,
         @Parameter(description = "경도") @RequestParam(value = "lng") BigDecimal lng) {
         return ResponseEntity.ok()
-            .body(ApiResponse.createSuccess(pkltService.getCloseParkingLots(lat, lng)));
+            .body(ApiResponse.createSuccess(pkltService.getNearbyParkingLots(lat, lng)));
 
     }
 
     @GetMapping("/{pkltId}/info")
-    public ResponseEntity<ApiResponse<PkltInfoResponse>> getParkingLotInfo(
+    public ResponseEntity<ApiResponse<PkltInfoResponse.Read>> getParkingLotInfo(
         @PathVariable Long pkltId) {
         return ResponseEntity.ok()
             .body(ApiResponse.createSuccess(pkltService.getParkingLotInfo(pkltId)));
