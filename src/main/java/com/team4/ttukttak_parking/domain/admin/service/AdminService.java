@@ -25,6 +25,7 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -60,13 +61,13 @@ public class AdminService {
 
     @Transactional
     public Void loadDefaultDataByXml() throws Exception{
-        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo");
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=Q5jQKcexkQ4zVD9oiB5QOkZWjy0gH0UNSxGjlar4otATImX%2Fb8V6jzGNSygnCxywNVDOtwvTnD0npTOK%2B0%2F8Sg%3D%3D");
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("solYear","UTF-8") + "=" + URLEncoder.encode(year, "UTF-8"));
+        String urlBuilder = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo" +
+                "?" + URLEncoder.encode("serviceKey", StandardCharsets.UTF_8) + "=Q5jQKcexkQ4zVD9oiB5QOkZWjy0gH0UNSxGjlar4otATImX%2Fb8V6jzGNSygnCxywNVDOtwvTnD0npTOK%2B0%2F8Sg%3D%3D" +
+                "&" + URLEncoder.encode("pageNo", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("1", StandardCharsets.UTF_8) +
+                "&" + URLEncoder.encode("numOfRows", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("1000", StandardCharsets.UTF_8) +
+                "&" + URLEncoder.encode("solYear", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(year, StandardCharsets.UTF_8);
 
-        URL url = new URL(urlBuilder.toString());
+        URL url = new URL(urlBuilder);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("GET");
