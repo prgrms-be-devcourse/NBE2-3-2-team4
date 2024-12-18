@@ -3,6 +3,7 @@ package com.team4.ttukttak_parking.domain.pklt.service;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltSimpleDto;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltInfoRepository;
@@ -41,27 +42,24 @@ public class PkltService {
             .build();
     }
 
-    public PkltResponse getParkingLotsStatus(Long pkltId) {
-        //주차장 조회 -> 없을시 NOT FOUND
-        Pklt pklt=pkltRepository.findById(pkltId)
-                .orElseThrow(()->new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
-        //주차장 상태 정보 조회->없을시 NOT FOUND
-        PkltStatus pkltStatus=pkltStatusRepository.findByPkltStatusId(pkltId)
-                .orElseThrow(()->new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+    public PkltStatusResponse.Read getParkingLotsStatus(Long pkltId) {
 
-        //총 면-현재 주차 대수
-        int availableSpots=pkltStatus.getTpkct()-pkltStatus.getNowPrkVhclCnt();//
+        // 주차장 조회 -> 없을시 NOT FOUND
+        Pklt pklt = pkltRepository.findById(pkltId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+        // 주차장 상태 정보 조회->없을시 NOT FOUND
+        PkltStatus pkltStatus = pkltStatusRepository.findByPklt(pklt)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
 
-        return PkltResponse.builder()
-                .pkltId(pklt.getPkltId())
-                .pkltName(pklt.getPkltNm())
-                .address(pklt.getAddr())
-                .latitude(pklt.getLat())
-                .longitude(pklt.getLot())
-                .totalSpots(pkltStatus.getTpkct())
-                .usedSpots(pkltStatus.getNowPrkVhclCnt())
-                .availableSpots(availableSpots)
-                .build();
+        // 총 면-현재 주차 대수
+        int availableSpots = pkltStatus.getTpkct() - pkltStatus.getNowPrkVhclCnt();//
+
+        return PkltStatusResponse.Read.builder()
+            .pkltId(pklt.getPkltId())
+            .availableSpots(availableSpots)
+            .usedSpots(pkltStatus.getNowPrkVhclCnt())
+            .totalSpots(pkltStatus.getTpkct())
+            .build();
     }
 
     public PkltInfoResponse getParkingLotInfo(Long pkltId) {

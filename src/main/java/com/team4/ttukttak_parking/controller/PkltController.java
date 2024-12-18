@@ -3,6 +3,7 @@ package com.team4.ttukttak_parking.controller;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltSimpleDto;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,10 +62,12 @@ public class PkltController {
             .body(ApiResponse.createSuccess(pkltService.getParkingLotInfo(pkltId)));
     }
 
-    //주차장 잔여 자리 조회
+    @Operation(summary = "주차장 잔여 자리 조회 API", description = "주차장 잔여 자리를 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
+    })
     @GetMapping("/{pkltId}/status")
-    public ResponseEntity<PkltResponse> getParkingLotStatus(@PathVariable Long pkltId) {
-        PkltResponse pkltResponse=pkltService.getParkingLotsStatus(pkltId);
-        return ResponseEntity.ok(pkltResponse);
+    public ResponseEntity<PkltStatusResponse.Read> getParkingLotStatus(@PathVariable Long pkltId) {
+        return ResponseEntity.ok().body(pkltService.getParkingLotsStatus(pkltId));
     }
 }
