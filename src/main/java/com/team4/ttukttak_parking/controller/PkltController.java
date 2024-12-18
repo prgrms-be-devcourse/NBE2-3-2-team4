@@ -14,11 +14,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -72,5 +68,14 @@ public class PkltController {
     @GetMapping("/{pkltId}/status")
     public ResponseEntity<PkltStatusResponse.Read> getParkingLotStatus(@PathVariable Long pkltId) {
         return ResponseEntity.ok().body(pkltService.getParkingLotsStatus(pkltId));
+    }
+
+    @Operation(summary = "비회원 주차 API", description = "주차장 잔여 자리가 존재할 시 비회원 주차를 진행합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
+    })
+    @PutMapping("/{pkltId}/parking")
+    public ResponseEntity<ApiResponse<PkltStatusResponse.Read>> reserveGuestParking(@PathVariable Long pkltId) {
+        return ResponseEntity.ok().body(ApiResponse.createSuccess(pkltService.reserveGuestParking(pkltId)));
     }
 }

@@ -12,6 +12,7 @@ import com.team4.ttukttak_parking.domain.pkltstatus.repository.PkltStatusReposit
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -100,4 +101,23 @@ public class PkltService {
             .build();
     }
 
+    @Transactional
+    public PkltStatusResponse.Read reserveGuestParking(Long pkltId) {
+        PkltStatus pkltStatus = pkltStatusRepository.findByPklt_PkltId(pkltId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        if (pkltStatus.getNowPrkVhclCnt() >= pkltStatus.getTpkct()) {
+            throw new NotFoundException(ErrorCode.PKLT_FULL);
+        }
+
+        pkltStatus.setNowPrkVhclCnt(pkltStatus.getNowPrkVhclCnt() + 1);
+        pkltStatus.setNowPrkVhclUpdtTm(LocalDateTime.now());
+
+        return PkltStatusResponse.Read.builder()
+            .pkltId(pkltStatus.getPklt().getPkltId())
+            .availableSpots(pkltStatus.getTpkct() - pkltStatus.getNowPrkVhclCnt())
+            .usedSpots(pkltStatus.getNowPrkVhclCnt())
+            .totalSpots(pkltStatus.getTpkct())
+            .build();
+    }
 }
