@@ -15,6 +15,7 @@ import com.team4.ttukttak_parking.domain.pkltstatus.repository.PkltStatusReposit
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +39,9 @@ public class AdminService {
     private final PkltInfoRepository pkltInfoRepository;
     private final HolidayRepository holidayRepository;
     private final String year = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+
+    @Value("${spring.api.holiday_key}")
+    private String holidayKey;
 
     @Transactional
     public Void loadDefaultDataByJson() throws Exception{
@@ -62,7 +65,7 @@ public class AdminService {
     @Transactional
     public Void loadDefaultDataByXml() throws Exception{
         String urlBuilder = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo" +
-                "?" + URLEncoder.encode("serviceKey", StandardCharsets.UTF_8) + "=Q5jQKcexkQ4zVD9oiB5QOkZWjy0gH0UNSxGjlar4otATImX%2Fb8V6jzGNSygnCxywNVDOtwvTnD0npTOK%2B0%2F8Sg%3D%3D" +
+                "?" + URLEncoder.encode("serviceKey", StandardCharsets.UTF_8) + "=" + holidayKey +
                 "&" + URLEncoder.encode("pageNo", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("1", StandardCharsets.UTF_8) +
                 "&" + URLEncoder.encode("numOfRows", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("1000", StandardCharsets.UTF_8) +
                 "&" + URLEncoder.encode("solYear", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(year, StandardCharsets.UTF_8);
