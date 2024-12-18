@@ -1,22 +1,30 @@
 package com.team4.ttukttak_parking.domain.member.dto;
 
-
 import com.team4.ttukttak_parking.domain.member.entity.enums.LoginTypes;
 import com.team4.ttukttak_parking.domain.member.entity.enums.MemberRoles;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-public class MemberRequestDto {
+public class MemberResponse {
+
 
     @Data
-    public static class Join {
+    @Builder
+    public static class Join{
         private String contact;
         private String email;
         private LoginTypes loginType;
         private MemberRoles role;
         private String name;
-        private String password;
+
+        public Join(String contact, String email, LoginTypes loginType, MemberRoles role, String name) {
+            this.contact = contact;
+            this.email = email;
+            this.loginType = loginType;
+            this.role = role;
+            this.name = name;
+        }
     }
+
 
 }

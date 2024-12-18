@@ -2,7 +2,6 @@ package com.team4.ttukttak_parking.domain.pklt.service;
 
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
-import com.team4.ttukttak_parking.domain.pklt.dto.PkltSimpleDto;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltInfoRepository;
@@ -16,6 +15,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -25,11 +25,12 @@ public class PkltService {
     private final PkltRepository pkltRepository;
     private final PkltInfoRepository pkltInfoRepository;
 
-    public PkltResponse getParkingLots(Long pkltId) {
+    @Transactional(readOnly = true)
+    public PkltResponse.Read getParkingLots(Long pkltId) {
         Pklt pklt = pkltRepository.findById(pkltId)
             .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
 
-        return PkltResponse.builder()
+        return PkltResponse.Read.builder()
             .pkltId(pklt.getPkltId())
             .pkltName(pklt.getPkltNm())
             .address(pklt.getAddr())
@@ -38,13 +39,13 @@ public class PkltService {
             .build();
     }
 
-    public PkltInfoResponse getParkingLotInfo(Long pkltId) {
+    @Transactional(readOnly = true)
+    public PkltInfoResponse.Read getParkingLotInfo(Long pkltId) {
         PkltInfo pkltInfo = pkltInfoRepository.findByPklt_PkltId(pkltId)
             .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
 
-        return PkltInfoResponse.builder()
+        return PkltInfoResponse.Read.builder()
             .pkltCd(pkltInfo.getPkltCd())
-            .pkltId(pkltInfo.getPklt().getPkltId())
             .prkTypeNm(pkltInfo.getPrkTypeNm())
             .wdOperBgngTm(pkltInfo.getWdOperBgngTm())
             .wdOperEndTm(pkltInfo.getWdOperEndTm())
@@ -60,7 +61,8 @@ public class PkltService {
             .build();
     }
 
-    public List<PkltSimpleDto> getCloseParkingLots(BigDecimal lat, BigDecimal lng) {
+    @Transactional(readOnly = true)
+    public List<PkltResponse.ReadNearby> getNearbyParkingLots(BigDecimal lat, BigDecimal lng) {
         double KM = 3.0;
         double lngDifference = KM / 111 / (Math.cos(lat.doubleValue()));
 
@@ -72,7 +74,7 @@ public class PkltService {
                 && pklt.getLot().doubleValue() < lng.doubleValue() + lngDifference;
 
         return pkltRepository.findAll().stream().filter(latFilter.and(lngFilter))
-            .map(PkltSimpleDto::from).collect(Collectors.toList());
+            .map(PkltResponse.ReadNearby::from).collect(Collectors.toList());
     }
 
 
