@@ -20,11 +20,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -53,4 +55,12 @@ public class PkltStatusDetail {
 
     @Enumerated(EnumType.STRING)
     private ParkingStatus status;
+
+    public static PkltStatusDetail to(Pklt pklt, String carNum, ParkingStatus status) {
+        return PkltStatusDetail.builder()
+            .pklt(pklt)
+            .carNum(carNum)
+            .status(status)
+            .build();
+    }
 }
