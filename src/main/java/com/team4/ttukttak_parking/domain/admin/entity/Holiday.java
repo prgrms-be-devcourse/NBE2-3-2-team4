@@ -16,21 +16,17 @@ public class Holiday {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long holidayId;
-    private String dateKind;
     private String dateName;
     @Column(name = "holidayFlag")
-    private boolean holidayFlag;
+    private Boolean holidayFlag;
     @Column(name = "localDate")
     private LocalDate localDate;
-    private int seq;
 
     public static Holiday to(HolidayItemDTO dto) {
         return Holiday.builder()
-            .dateKind(dto.getDateKind())
             .dateName(dto.getDateName())
-            .holidayFlag(dto.isHolidayFlag())
+            .holidayFlag(dto.getHolidayFlag())
             .localDate(dto.getLocalDate())
-            .seq(dto.getSeq())
             .build();
     }
 }

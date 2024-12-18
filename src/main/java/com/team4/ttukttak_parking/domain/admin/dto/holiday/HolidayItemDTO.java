@@ -13,18 +13,12 @@ import java.time.format.DateTimeFormatter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 public class HolidayItemDTO {
-    @XmlElement(name = "dateKind")
-    private String dateKind;
-
     @XmlElement(name = "dateName")
     private String dateName;
 
-    private boolean holidayFlag;
+    private Boolean holidayFlag;
 
     private LocalDate localDate;
-
-    @XmlElement(name = "seq")
-    private int seq;
 
     @XmlElement(name = "locdate")
     public void setLocdate(String locdate) {
