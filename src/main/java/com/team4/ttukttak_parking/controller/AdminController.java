@@ -35,6 +35,16 @@ public class AdminController {
             ApiResponse.createSuccess(adminService.loadDefaultDataByJson()));
     }
 
+    @Operation(summary = "공휴일 데이터 저장 API", description = "공휴일 데이터를 저장합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+    })
+    @PostMapping("/xml")
+    public ResponseEntity<ApiResponse<Void>> saveHolidayDataFromXml() throws Exception {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse.createSuccess(adminService.loadDefaultDataByXml()));
+    }
+
     @Operation(summary = "주차권 상품 등록 API", description = "주차권 상품을 등록합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
