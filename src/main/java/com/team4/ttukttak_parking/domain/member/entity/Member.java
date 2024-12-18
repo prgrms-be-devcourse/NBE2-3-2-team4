@@ -55,4 +55,13 @@ public class Member {
         this.updatedAt = updatedAt;
 
     }
+
+
+    public void updateMember(String name, String email, String contact, String password) {
+        this.name = name;
+        this.email = email;
+        this.contact = contact;
+        this.password = password;
+    }
+
 }

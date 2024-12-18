@@ -37,7 +37,7 @@ public class MemberController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
     })
-    @PostMapping("/memberInfo")
+    @GetMapping("/memberInfo")
     public ResponseEntity<ApiResponse<MemberResponse>> getMemberInfo(
             @RequestParam String email) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -49,12 +49,11 @@ public class MemberController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
     })
-    @PostMapping("/memberModify")
+    @PutMapping("/memberModify")
     public ResponseEntity<ApiResponse<MemberResponse>> modifyMember(
             @RequestBody MemberRequest.Modify modifyInfo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 ApiResponse.createSuccess(memberService.modifyMember(modifyInfo)));
     }
-
 
 }

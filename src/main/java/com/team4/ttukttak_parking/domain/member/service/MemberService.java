@@ -69,16 +69,13 @@ public class MemberService {
         Member member = memberRepository.findByEmail(modifyInfo.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-
-        // 2. 엔티티 값 변경
-        // @Transactional에 의해 자동 저장
-        member.setContact(modifyInfo.getContact());
-        member.setEmail(modifyInfo.getEmail());
-        member.setName(modifyInfo.getName());
-        member.setPassword(modifyInfo.getPassword());
-        // Transaction 종료가 되지 않아 변경값을 미리 지정하여 조회
-        member.setUpdatedAt(LocalDateTime.now());
-
+        // Entity 내부 선언한 메소드를통해 업데이트 할수 있도록 수정
+        member.updateMember(
+                modifyInfo.getContact(),
+                modifyInfo.getEmail(),
+                modifyInfo.getName(),
+                modifyInfo.getPassword()
+        );
 
         return MemberResponse.builder()
                 .contact(member.getContact())
@@ -89,6 +86,7 @@ public class MemberService {
                 .created_at(member.getCreatedAt())
                 .updated_at(member.getUpdatedAt())
                 .build();
+
     }
 
 
