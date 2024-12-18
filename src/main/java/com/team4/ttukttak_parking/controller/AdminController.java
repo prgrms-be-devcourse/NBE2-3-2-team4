@@ -51,7 +51,6 @@ public class AdminController {
     })
     @GetMapping("/pklt")
     public ResponseEntity<List<PkltResponse.GetList>> getPkltAllList() {
-
         return ResponseEntity.ok().body(adminService.getLists());
 
     }
