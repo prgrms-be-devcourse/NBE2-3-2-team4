@@ -17,5 +17,4 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-
 }
