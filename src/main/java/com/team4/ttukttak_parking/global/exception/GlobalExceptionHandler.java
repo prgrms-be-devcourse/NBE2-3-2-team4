@@ -1,6 +1,7 @@
 package com.team4.ttukttak_parking.global.exception;
 
 import com.team4.ttukttak_parking.global.response.ApiResponse;
+import com.team4.ttukttak_parking.security.exception.JWTCustomException;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -110,6 +111,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleIOException(IOException e) {
         log.error("[IOException] message: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.createError(e.getMessage()));
+    }
+
+    @ExceptionHandler(JWTCustomException.class)
+    public ResponseEntity<ApiResponse<Object>> handleJwtExceptionException(JWTCustomException e) {
+        log.error("[JwtExceptionError] message: {}", e.getErrorCode().getMessage());
+        return ResponseEntity.status(e.getErrorCode().getStatus())
+                .body(ApiResponse.createError(e.getErrorCode().getMessage()));
     }
 
     // 위의 경우를 제외한 모든 에러 500
