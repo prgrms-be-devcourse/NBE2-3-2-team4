@@ -73,7 +73,7 @@ public class PkltService {
 
     @Transactional(readOnly = true)
     public List<PkltResponse.ReadNearby> getNearbyParkingLots(BigDecimal lat, BigDecimal lng) {
-        double KM = 0.5;
+        double KM = 10;
         double lngDifference = KM / 111 / (Math.cos(lat.doubleValue()));
 
         Predicate<Pklt> latFilter = pklt ->

@@ -9,4 +9,5 @@ public interface PkltRepository extends JpaRepository<Pklt, Long> {
     //리스트
     List<Pklt> findAll();
 
+    Pklt findByPkltNm(String pkltNm);
 }
