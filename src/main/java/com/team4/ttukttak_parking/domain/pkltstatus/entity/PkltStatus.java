@@ -52,4 +52,8 @@ public class PkltStatus {
             .nowPrkVhclCnt(data.get("now_prk_vhcl_cnt").asInt())
             .build();
     }
+
+    public void fixStreetPklt() {
+        this.tpkct += 1;
+    }
 }
