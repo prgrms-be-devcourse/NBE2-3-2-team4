@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/members/")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "😎 User-Auth", description = "사용자 인증 인가 관련 API - 별다른 인증 없이 접근 가능")
+@Tag(name = "😎 User-Auth", description = "사용자 인증 인가 관련 API - 별도의 인증 없이 접근 가능")
 public class AuthController {
 
     private final CustomUserDetailService userDetailService;
@@ -29,7 +29,7 @@ public class AuthController {
 
     @Operation(summary = "회원가입 API", description = "회원 가입을 진행합니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Object>> joinMember(@RequestBody SignupRequestDto dto) {
@@ -43,9 +43,9 @@ public class AuthController {
                         .data(null).build());
     }
 
-    @Operation(summary = "token update api", description = "refresh token을 통해 at & rt 모두 update 진행")
+    @Operation(summary = "token update api", description = "refresh token을 통해 at & rt 모두 update")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @PostMapping("/tokens")
     public ResponseEntity<ApiResponse<TokenDto>> updateTokens(@RequestBody UpdateTokenDto updateTokenDto){
@@ -53,9 +53,9 @@ public class AuthController {
         return ResponseEntity.ok().body(ApiResponse.createSuccess(tokenDto));
     }
 
-    @Operation(summary = "login api", description = "회원 로그인 진행 후 token 발급")
+    @Operation(summary = "login api", description = "회원 로그인 진행 & jwt token 발급")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<TokenDto>> login(@RequestBody LoginRequestDto loginRequestDto){

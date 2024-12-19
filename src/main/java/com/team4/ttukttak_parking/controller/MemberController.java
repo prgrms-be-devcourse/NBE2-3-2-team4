@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-@Tag(name = "😏 User", description = "사용자 관련 API")
+@Tag(name = "😏 User", description = "인증/인가를 제외한 회원 관련 API")
 public class MemberController {
 
     private final MemberService memberService;
@@ -25,7 +25,7 @@ public class MemberController {
 
     @Operation(summary = "회원조회", description = "email을 입력받아 사용자 정보를 리턴합니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/mypage/myinfo")
     public ResponseEntity<ApiResponse<MemberDto>> getMemberInfo(@AuthenticationPrincipal User user) {
@@ -36,7 +36,7 @@ public class MemberController {
 
     @Operation(summary = "회원정보수정", description = "수정정보를 입력받고 변경된 사용자 전체 정보 리턴")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @PutMapping("/mypage/myinfo")
     public ResponseEntity<ApiResponse<MemberDto>> modifyMember(@AuthenticationPrincipal User user,

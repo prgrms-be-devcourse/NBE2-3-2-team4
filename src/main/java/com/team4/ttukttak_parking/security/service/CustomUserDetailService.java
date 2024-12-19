@@ -18,6 +18,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -76,8 +78,7 @@ public class CustomUserDetailService implements UserDetailsService {
             String email =  tokenProvider.findUser(refreshToken);
             Member member = findUserByEmail(email);
 
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(member.getRole().name()));
+            List<GrantedAuthority> authorities = authorityMap.get(member.getRole());
 
             User user = new User(email,"password",authorities);
             // Authentication 객체 생성
@@ -99,8 +100,7 @@ public class CustomUserDetailService implements UserDetailsService {
         Member member =  memberRepository.findByEmail(email).orElseThrow(()->new NotFoundException(ErrorCode.USER_NOT_FOUND));
         if(passwordEncoder.matches(password,member.getPassword())){
 
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(member.getRole().name()));
+            List<GrantedAuthority> authorities = authorityMap.get(member.getRole());
 
             User user = new User(email,"password",authorities);
 
@@ -116,12 +116,11 @@ public class CustomUserDetailService implements UserDetailsService {
         }
     }
 
-
     //일반 user 회원가입
     @Transactional
     public void join(SignupRequestDto signupRequestDto) {
         if (memberRepository.existsByEmail(signupRequestDto.getEmail())) {
-            throw new DuplicateAccountException(ErrorCode.USER_ALREADY_EXIST.getMessage());
+            throw new DuplicateAccountException(ErrorCode.USER_ALREADY_EXIST);
         }
 
         Member member = Member.builder()
@@ -136,6 +135,20 @@ public class CustomUserDetailService implements UserDetailsService {
         memberRepository.save(member);
     }
 
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void setAuthoritiesMap(){
+
+        List<GrantedAuthority> generalAuthorities = new ArrayList<GrantedAuthority>();
+        generalAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        List<GrantedAuthority> adminAuthorities = new ArrayList<GrantedAuthority>();
+        adminAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        adminAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        authorityMap.put(MemberRoles.ROLE_USER,generalAuthorities);
+        authorityMap.put(MemberRoles.ROLE_ADMIN,adminAuthorities);
+    }
 
 
 }
