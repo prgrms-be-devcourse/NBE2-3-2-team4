@@ -41,5 +41,24 @@ public class PkltResponse {
             return new ReadNearby(pklt.getPkltId(),pklt.getLat(),pklt.getLot());
         }
     }
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class GetList{
+        private Long pkltId;
+        private String pkltName;
+        private String address;
+        private int availableSpots;
+        private int usedSpots;
+        private int totalSpots;
+        @Builder
+        public GetList(Long pkltId, String pkltName, String address, int availableSpots, int usedSpots,int totalSpots) {
+            this.pkltId = pkltId;
+            this.pkltName = pkltName;
+            this.address = address;
+            this.availableSpots = availableSpots;
+            this.usedSpots = usedSpots;
+            this.totalSpots = totalSpots;
+        }
+    }
 
 }
