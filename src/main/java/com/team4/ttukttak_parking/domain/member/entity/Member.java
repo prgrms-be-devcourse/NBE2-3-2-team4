@@ -40,19 +40,18 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updateAt;
 
-    @Builder
-    public Member( String email, String password, String name, String contact, MemberRoles role, LoginTypes loginType, LocalDateTime createdAt, LocalDateTime updatedAt) {
-
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.contact = contact;
-        this.role = role;
-        this.loginType = loginType;
-        this.createdAt = createdAt;
-        this.updateAt = updateAt;
-
+    public static Member to(MemberRequest.Join dto) {
+        return Member.builder()
+            .email(dto.email())
+            .password(dto.password())
+            .name(dto.name())
+            .contact(dto.contact())
+            .role(dto.role())
+            .loginType(dto.loginType())
+            .build();
     }
+
+
 
     public void updateMember(String name, String contact) {
         this.name = name;

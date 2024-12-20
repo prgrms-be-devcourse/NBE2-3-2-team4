@@ -1,12 +1,9 @@
 package com.team4.ttukttak_parking.domain.pkltstatus.entity;
 
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
-import com.team4.ttukttak_parking.domain.pklt.entity.enums.ParkingStatus;
-import com.team4.ttukttak_parking.domain.ticket.entity.TicketOrder;
+import com.team4.ttukttak_parking.domain.order.entity.Order;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -43,9 +40,8 @@ public class PkltStatusDetail {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ticket_id")
-    private TicketOrder ticketOrder;
+    private Order order;
 
-    private String carNum;
     private int lateFee;
 
     @CreatedDate
@@ -53,14 +49,5 @@ public class PkltStatusDetail {
 
     private LocalDateTime endTime;
 
-    @Enumerated(EnumType.STRING)
-    private ParkingStatus status;
 
-    public static PkltStatusDetail to(Pklt pklt, String carNum, ParkingStatus status) {
-        return PkltStatusDetail.builder()
-            .pklt(pklt)
-            .carNum(carNum)
-            .status(status)
-            .build();
-    }
 }
