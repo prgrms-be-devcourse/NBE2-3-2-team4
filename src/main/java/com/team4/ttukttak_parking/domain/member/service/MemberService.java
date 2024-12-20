@@ -8,10 +8,9 @@ import com.team4.ttukttak_parking.global.exception.DuplicateAccountException;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 
 @Service
@@ -19,7 +18,17 @@ import java.time.LocalDateTime;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    //일반 user 회원가입
+    @Transactional
+    public MemberResponse.Join join(MemberRequest.Join dto) {
+        if (memberRepository.existsByEmail(dto.email())) {
+            throw new DuplicateAccountException(ErrorCode.USER_ALREADY_EXIST);
+        }
+
+        return MemberResponse.Join.from(memberRepository.save(Member.to(dto, passwordEncoder)));
+    }
 
     @Transactional(readOnly = true)
     public MemberResponse.Read getMemberInfo(String email) {
@@ -29,21 +38,14 @@ public class MemberService {
     }
 
     @Transactional
-    public Void modifyMember(MemberRequest.Modify modifyInfo) {
-        Member member = memberRepository.findByEmail(modifyInfo.getEmail())
+    public Void modifyInfo(MemberRequest.Modify dto, String email) {
+        Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        member.updateMember(
-            modifyInfo.getContact(),
-            modifyInfo.getEmail(),
-            modifyInfo.getName(),
-            modifyInfo.getPassword()
-        );
+        member.updateMember(dto.contact(), dto.name());
 
         return null;
     }
-
-
 
 
 }

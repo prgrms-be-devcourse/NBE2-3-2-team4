@@ -2,12 +2,10 @@ package com.team4.ttukttak_parking.security.handler;
 
 
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
-import com.team4.ttukttak_parking.security.exception.JWTCustomException;
+import com.team4.ttukttak_parking.global.exception.JWTCustomException;
 import com.team4.ttukttak_parking.security.util.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -45,7 +42,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //토큰 정보 유효하면 securityContextHolder 에 사용자 인증 정보저장하고 다음 filter 진행
         //토큰 유효하지 않으면 JWTFilterExceptionHandler 에서 예외 처리
-
         if (StringUtils.hasText(jwt)) {
             if (tokenProvider.validateToken(jwt)) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
@@ -61,7 +57,7 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 
-        String[] excludePath = {"/api/members/signup", "/api/members/login", "/api/members/tokens"};
+        String[] excludePath = {"/api/auth/signup", "/api/auth/login", "/api/auth/reissue", "/api/json"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }

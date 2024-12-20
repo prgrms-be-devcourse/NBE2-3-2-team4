@@ -1,6 +1,5 @@
-package com.team4.ttukttak_parking.security.exception;
+package com.team4.ttukttak_parking.global.exception;
 
-import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -1,7 +1,6 @@
 package com.team4.ttukttak_parking.global.exception;
 
 import com.team4.ttukttak_parking.global.response.ApiResponse;
-import com.team4.ttukttak_parking.security.exception.JWTCustomException;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.stream.Collectors;

@@ -36,7 +36,7 @@ public class Ticket {
     private int pkDuration;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pklt_id")
+    @JoinColumn(name = "pklt_id", nullable = false)
     private Pklt pklt;
 
     @CreatedDate
