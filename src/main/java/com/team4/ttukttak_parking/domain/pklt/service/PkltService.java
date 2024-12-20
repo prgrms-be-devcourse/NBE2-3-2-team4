@@ -2,14 +2,10 @@ package com.team4.ttukttak_parking.domain.pklt.service;
 
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
-import com.team4.ttukttak_parking.domain.pkltstatus.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltInfoRepository;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltRepository;
-import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
-import com.team4.ttukttak_parking.domain.pkltstatus.repository.PkltStatusDetailRepository;
-import com.team4.ttukttak_parking.domain.pkltstatus.repository.PkltStatusRepository;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.math.BigDecimal;

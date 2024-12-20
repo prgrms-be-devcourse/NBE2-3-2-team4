@@ -1,11 +1,6 @@
 package com.team4.ttukttak_parking.domain.pklt.dto;
 
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 public record PkltInfoResponse() {
@@ -29,7 +24,8 @@ public record PkltInfoResponse() {
             return new Read(
                 pkltInfo.getPkltCd(), pkltInfo.getPrkTypeNm(), pkltInfo.getWdOperBgngTm(),
                 pkltInfo.getWdOperEndTm(), pkltInfo.getWeOperBgngTm(), pkltInfo.getWeOperEndTm(),
-                pkltInfo.getLhldyOperBgngTm(), pkltInfo.getLhldyOperEndTm(), pkltInfo.getBscPrkCrg(),
+                pkltInfo.getLhldyOperBgngTm(), pkltInfo.getLhldyOperEndTm(),
+                pkltInfo.getBscPrkCrg(),
                 pkltInfo.getBscPrkHr(), pkltInfo.getAddPrkCrg(), pkltInfo.getAddPrkHr()
             );
         }

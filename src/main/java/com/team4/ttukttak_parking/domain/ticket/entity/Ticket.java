@@ -1,7 +1,6 @@
 package com.team4.ttukttak_parking.domain.ticket.entity;
 
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
-import com.team4.ttukttak_parking.domain.ticket.dto.TicketRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;

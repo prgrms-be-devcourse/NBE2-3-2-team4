@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +28,10 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberResponse.Read getMemberInfo(String email ) {
+    public MemberResponse.Read getMemberInfo(String email) {
         return MemberResponse.Read.from(
             memberRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND)));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND)));
     }
 
     @Transactional
@@ -42,16 +40,14 @@ public class MemberService {
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         member.updateMember(
-                modifyInfo.getContact(),
-                modifyInfo.getEmail(),
-                modifyInfo.getName(),
-                modifyInfo.getPassword()
+            modifyInfo.getContact(),
+            modifyInfo.getEmail(),
+            modifyInfo.getName(),
+            modifyInfo.getPassword()
         );
 
         return null;
     }
-
-
 
 
 }
