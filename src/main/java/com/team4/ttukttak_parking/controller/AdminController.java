@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
-@Tag(name = "👩‍🔧 Admin", description = "관리자 관련 API")
+@Tag(name = "👩‍🔧 Admin", description = "관리자 권한 필요 API")
 public class AdminController {
 
     private final AdminService adminService;
@@ -40,7 +40,7 @@ public class AdminController {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/pklt")
-    public ResponseEntity<ApiResponse<List<ReadPkltAndStatus>>> getPkltAllList() {
+    public ResponseEntity<ApiResponse<List<ReadPkltAndStatus>>> getPkltList() {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             ApiResponse.createSuccess(adminService.getLists()));
 

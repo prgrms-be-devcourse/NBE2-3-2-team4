@@ -3,6 +3,7 @@ package com.team4.ttukttak_parking.domain.member.service;
 import com.team4.ttukttak_parking.domain.member.dto.MemberRequest;
 import com.team4.ttukttak_parking.domain.member.dto.MemberResponse;
 import com.team4.ttukttak_parking.domain.member.entity.Member;
+import com.team4.ttukttak_parking.domain.member.entity.enums.MemberRoles;
 import com.team4.ttukttak_parking.domain.member.repository.MemberRepository;
 import com.team4.ttukttak_parking.global.exception.DuplicateAccountException;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
@@ -20,14 +21,26 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //일반 user 회원가입
+    // 일반 user 회원가입
     @Transactional
     public MemberResponse.Join join(MemberRequest.Join dto) {
         if (memberRepository.existsByEmail(dto.email())) {
             throw new DuplicateAccountException(ErrorCode.USER_ALREADY_EXIST);
         }
 
-        return MemberResponse.Join.from(memberRepository.save(Member.to(dto, passwordEncoder)));
+        return MemberResponse.Join.from(
+            memberRepository.save(Member.to(dto, passwordEncoder, MemberRoles.ROLE_USER)));
+    }
+
+    // Admin 회원가입
+    @Transactional
+    public MemberResponse.Join joinAdmin(MemberRequest.Join dto) {
+        if (memberRepository.existsByEmail(dto.email())) {
+            throw new DuplicateAccountException(ErrorCode.USER_ALREADY_EXIST);
+        }
+
+        return MemberResponse.Join.from(
+            memberRepository.save(Member.to(dto, passwordEncoder, MemberRoles.ROLE_ADMIN)));
     }
 
     @Transactional(readOnly = true)

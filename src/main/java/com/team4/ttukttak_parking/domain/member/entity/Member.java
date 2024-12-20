@@ -54,13 +54,13 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public static Member to(MemberRequest.Join dto, PasswordEncoder encoder) {
+    public static Member to(MemberRequest.Join dto, PasswordEncoder encoder, MemberRoles role) {
         return Member.builder()
             .email(dto.email())
             .password(encoder.encode(dto.password()))
             .name(dto.name())
             .contact(dto.contact())
-            .role(MemberRoles.ROLE_USER)
+            .role(role)
             .loginType(LoginTypes.BASIC)
             .build();
     }
