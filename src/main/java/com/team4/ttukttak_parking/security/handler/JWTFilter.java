@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -57,7 +58,9 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 
-        String[] excludePath = {"/api/auth/signup", "/api/auth/login", "/api/auth/reissue", "/api/admin/json", "/api/admin/tickets"};
+        String[] excludePath = {
+            "/api/auth/signup", "/api/auth/login", "/api/auth/reissue", "/api/auth/admin/signup"
+        };
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }

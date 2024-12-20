@@ -30,10 +30,6 @@ public class SecurityConfig {
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
     private final TokenProvider tokenProvider;
-    private static final String[] ANONYMOUS_MATCHERS = {
-        "/api/auth/signup", "/api/auth/login",
-        "/api/auth/reissue", "/error", "/api/admin/json", "/api/admin/tickets"
-    };
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
@@ -44,8 +40,8 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
-                    .requestMatchers(ANONYMOUS_MATCHERS).permitAll()
-//                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
             .sessionManagement((sessionManagement) ->
@@ -73,7 +69,6 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/test"))
             .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**"))
             .requestMatchers(new AntPathRequestMatcher("/swagger-ui.html"));
-
     }
 
     @Bean

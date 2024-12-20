@@ -30,6 +30,17 @@ public class AuthController {
     private final CustomUserDetailService userDetailService;
     private final MemberService memberService;
 
+    @Operation(summary = "ADMIN 회원가입 API", description = "ADMIN 회원 가입을 진행합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+    })
+    @PostMapping("/admin/signup")
+    public ResponseEntity<ApiResponse<MemberResponse.Join>> joinAdmin(
+        @RequestBody MemberRequest.Join dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            ApiResponse.createSuccess(memberService.joinAdmin(dto)));
+    }
+
     @Operation(summary = "회원가입 API", description = "회원 가입을 진행합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
@@ -62,5 +73,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ApiResponse.createSuccess(userDetailService.login(dto)));
     }
+
 
 }
