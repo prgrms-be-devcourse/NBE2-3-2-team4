@@ -2,7 +2,8 @@ package com.team4.ttukttak_parking.domain.admin.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
+import com.team4.ttukttak_parking.domain.member.dto.MemberResponse.Read;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.ReadPkltAndStatus;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltInfoRepository;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,8 +69,8 @@ public class AdminService {
         return null;
     }
 
-    @Transactional
-    public List<PkltResponse.GetList> getLists(){
+    @Transactional(readOnly = true)
+    public List<ReadPkltAndStatus> getLists(){
         List<Pklt> pklts = pkltRepository.findAll();  //주차장 정보 전체 조회
         List<Long> pkltIds = new ArrayList<>();  //주차장 고유 아이디 리스트 생성
 
@@ -85,21 +85,14 @@ public class AdminService {
             pkltStatusMap.put(pkltStatus.getPklt().getPkltId(), pkltStatus);
         }
 
-        List<PkltResponse.GetList> pkltGetLists = new ArrayList<>(); //주차장의 정보와 주차장 상세정보를 담을 리스트 생성
+        List<ReadPkltAndStatus> pkltReadPkltAndStatuses = new ArrayList<>(); //주차장의 정보와 주차장 상세정보를 담을 리스트 생성
         for (Pklt pklt : pklts) {
             PkltStatus pkltStatus=pkltStatusMap.get(pklt.getPkltId());//배열을 돌릴 때 그 값에 맞는 아이디를 불러오고 아이디를 통해 주차장 상세정보를 불러오게 한다.
-             pkltGetLists.add(PkltResponse.GetList.builder()
-                    .pkltId(pklt.getPkltId())
-                    .pkltName(pklt.getPkltNm())
-                    .address(pklt.getAddr())
-                    .availableSpots(pkltStatus.getTpkct()-pkltStatus.getNowPrkVhclCnt())
-                    .usedSpots(pkltStatus.getNowPrkVhclCnt())
-                    .totalSpots(pkltStatus.getTpkct())
-                    .build());
-
-
+            int availableSpots = pkltStatus.getTpkct()-pkltStatus.getNowPrkVhclCnt();
+            pkltReadPkltAndStatuses.add(ReadPkltAndStatus.from(pklt, availableSpots, pkltStatus));
         }
-        return pkltGetLists;
+
+        return pkltReadPkltAndStatuses;
     }
 
 }

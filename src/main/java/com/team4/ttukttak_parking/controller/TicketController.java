@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/ticket")
+@RequestMapping("/api/tickets")
 @Slf4j
 @Tag(name = "🎫 Ticket", description = "주차권 관련 API")
 public class TicketController {

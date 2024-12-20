@@ -16,12 +16,4 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    @Transactional
-    public TicketResponseDto.Create createTicket(TicketRequestDto.Create dto) {
-        if (ticketRepository.findByPriceAndPkDuration(dto.price(), dto.pkDuration()).isPresent()) {
-            throw new BadRequestException(ErrorCode.TICKET_ALREADY_EXIST);
-        }
-        
-        return TicketResponseDto.Create.from(ticketRepository.save(Ticket.to(dto)));
-    }
 }

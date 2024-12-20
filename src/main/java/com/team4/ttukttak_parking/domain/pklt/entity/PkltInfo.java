@@ -39,7 +39,6 @@ public class PkltInfo {
     private int bscPrkHr;           // 기본 주차 시간(분 단위)
     private int addPrkCrg;          // 추가 단위 요금
     private int addPrkHr;           // 추가 단위 시간(분 단위)
-    private int dayMaxCrg;          // 일 최대 요금
 
     public static PkltInfo to(JsonNode data, Pklt pklt) {
         return PkltInfo.builder()
@@ -56,7 +55,6 @@ public class PkltInfo {
             .bscPrkHr(data.get("bsc_prk_hr").asInt())
             .addPrkCrg(data.get("add_prk_crg").asInt())
             .addPrkHr(data.get("add_prk_hr").asInt())
-            .dayMaxCrg(data.get("day_max_crg").asInt())
             .build();
     }
 }

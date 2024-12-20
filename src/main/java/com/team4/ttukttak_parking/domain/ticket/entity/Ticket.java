@@ -1,11 +1,15 @@
 package com.team4.ttukttak_parking.domain.ticket.entity;
 
+import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.ticket.dto.TicketRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -32,14 +36,12 @@ public class Ticket {
     private int price;
     private int pkDuration;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pklt_id")
+    private Pklt pklt;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public static Ticket to(TicketRequestDto.Create dto) {
-        return Ticket.builder()
-            .price(dto.price())
-            .pkDuration(dto.pkDuration())
-            .build();
-    }
 
 }

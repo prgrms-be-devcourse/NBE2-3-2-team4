@@ -1,8 +1,9 @@
-package com.team4.ttukttak_parking.domain.ticket.entity;
+package com.team4.ttukttak_parking.domain.order.entity;
 
 import com.team4.ttukttak_parking.domain.member.entity.Member;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
-import com.team4.ttukttak_parking.domain.pklt.entity.enums.ParkingStatus;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
+import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -27,12 +28,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "ticket_orders")
-public class TicketOrder {
+@Table(name = "orders")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ticketOrderId;
+    private Long orderId;
 
     private String carNum;
 
@@ -52,7 +53,7 @@ public class TicketOrder {
     private ParkingStatus status;
 
     @CreatedDate
-    private LocalDateTime startTime;
+    private LocalDateTime createdAt;
 
 
 }

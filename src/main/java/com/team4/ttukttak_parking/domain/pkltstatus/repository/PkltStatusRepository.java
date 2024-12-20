@@ -14,6 +14,4 @@ public interface PkltStatusRepository extends JpaRepository<PkltStatus, Long> {
     //주차장의 아이디들을 받아서 존재한다면 주자상태 정보를 찾아 리스트로 담아둔다
     List<PkltStatus> findByPkltPkltIdIn(List<Long> pkltIds);
 
-    Optional<PkltStatus> findByPklt_PkltId(Long pkltId);
-
 }
