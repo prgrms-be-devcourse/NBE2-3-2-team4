@@ -34,7 +34,7 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
 
 
     //-4000: PKLT(PARKING)
-    PKLT_NOT_FOUND(404, -4000, "잘못된 경로입니다."),
+    PKLT_NOT_FOUND(404, -4000, "해당 주차장을 찾을 수 없습니다."),
     PKLT_FULL(400, -4001, "해당 주차장이 가득 찼습니다."),
     PKLT_ALREADY_PARKED(400, -4002, "이미 주차 중인 차량입니다."),
 

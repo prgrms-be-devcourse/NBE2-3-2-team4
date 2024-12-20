@@ -42,5 +42,12 @@ public class Ticket {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public static Ticket to(Pklt pklt, int price, int pkDuration) {
+        return Ticket.builder()
+            .price(price)
+            .pkDuration(pkDuration)
+            .pklt(pklt)
+            .build();
+    }
 
 }

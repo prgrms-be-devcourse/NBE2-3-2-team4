@@ -32,7 +32,7 @@ public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private static final String[] ANONYMOUS_MATCHERS = {
         "/api/auth/signup", "/api/auth/login",
-        "/api/auth/reissue", "/error", "/api/json"
+        "/api/auth/reissue", "/error", "/api/admin/json", "/api/admin/tickets"
     };
 
     @Bean
@@ -45,7 +45,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
                     .requestMatchers(ANONYMOUS_MATCHERS).permitAll()
-                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+//                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
             .sessionManagement((sessionManagement) ->
