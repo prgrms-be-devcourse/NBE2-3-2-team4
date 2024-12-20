@@ -10,12 +10,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/members")
 @RequiredArgsConstructor
-@Tag(name = "😏 User", description = "사용자 관련 API")
+@Tag(name = "😏 Member", description = "사용자 관련 API")
 public class MemberController {
 
     private final MemberService memberService;
@@ -33,27 +39,26 @@ public class MemberController {
     }
 
 
-    @Operation(summary = "회원조회", description = "email을 입력받아 사용자 정보를 리턴합니다.")
+    @Operation(summary = "회원 조회", description = "회원의 정보를 조회합니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
-    @GetMapping("/memberInfo")
-    public ResponseEntity<ApiResponse<MemberResponse>> getMemberInfo(
-            @RequestParam String email) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                ApiResponse.createSuccess(memberService.getMemberInfo(email)));
+    @GetMapping("/info")
+    public ResponseEntity<ApiResponse<MemberResponse.Read>> getMemberInfo(
+        @RequestParam String email) {
+        return ResponseEntity.ok().body(
+            ApiResponse.createSuccess(memberService.getMemberInfo(email)));
     }
 
 
-    @Operation(summary = "회원정보수정", description = "수정정보를 입력받고 변경된 사용자 전체 정보 리턴")
+    @Operation(summary = "회원 정보 수정", description = "회원의 정보를 수정합니다.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
-    @PutMapping("/memberModify")
-    public ResponseEntity<ApiResponse<MemberResponse>> modifyMember(
-            @RequestBody MemberRequest.Modify modifyInfo) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                ApiResponse.createSuccess(memberService.modifyMember(modifyInfo)));
+    @PutMapping
+    public ResponseEntity<ApiResponse<Void>> modifyMember(
+        @RequestBody MemberRequest.Modify dto) {
+        return ResponseEntity.ok().body(ApiResponse.createSuccess(memberService.modifyMember(dto)));
     }
 
 }

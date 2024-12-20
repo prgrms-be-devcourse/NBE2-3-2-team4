@@ -1,5 +1,6 @@
 package com.team4.ttukttak_parking.domain.member.entity;
 
+import com.team4.ttukttak_parking.domain.member.dto.MemberRequest;
 import com.team4.ttukttak_parking.domain.member.entity.enums.LoginTypes;
 import com.team4.ttukttak_parking.domain.member.entity.enums.MemberRoles;
 import jakarta.persistence.*;
@@ -12,8 +13,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
-@Setter
 @Entity
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -42,18 +43,15 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Builder
-    public Member( String email, String password, String name, String contact, MemberRoles role, LoginTypes loginType, LocalDateTime createdAt, LocalDateTime updatedAt) {
-
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.contact = contact;
-        this.role = role;
-        this.loginType = loginType;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-
+    public static Member to(MemberRequest.Join dto) {
+        return Member.builder()
+            .email(dto.email())
+            .password(dto.password())
+            .name(dto.name())
+            .contact(dto.contact())
+            .role(dto.role())
+            .loginType(dto.loginType())
+            .build();
     }
 
 
