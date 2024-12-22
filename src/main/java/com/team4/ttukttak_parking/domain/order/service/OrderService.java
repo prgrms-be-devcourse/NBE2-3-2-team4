@@ -2,11 +2,11 @@ package com.team4.ttukttak_parking.domain.order.service;
 
 import com.team4.ttukttak_parking.domain.member.entity.Member;
 import com.team4.ttukttak_parking.domain.member.repository.MemberRepository;
-import com.team4.ttukttak_parking.domain.order.dto.OrderRequest;
+import com.team4.ttukttak_parking.domain.order.dto.OrderRequest.CreateOrder;
+import com.team4.ttukttak_parking.domain.order.dto.OrderResponse;
 import com.team4.ttukttak_parking.domain.order.entity.Order;
 import com.team4.ttukttak_parking.domain.order.repository.OrderRepository;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
-import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
 import com.team4.ttukttak_parking.global.exception.BadRequestException;
@@ -27,13 +27,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public void createOrder(OrderRequest.Order orderRequest, String email) {
+    public OrderResponse.CreateOrder createOrder(CreateOrder dto, String email) {
         // 회원 검색
         final Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // 해당 주차권 검색
-        final Ticket ticket = ticketRepository.findById(orderRequest.ticketId())
+        final Ticket ticket = ticketRepository.findById(dto.ticketId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
 
         // 현재 기준 주차장 잔여자리 존재 예외처리
@@ -46,13 +46,16 @@ public class OrderService {
 
         // 주차권 주문 생성 (주차 대기 상태로 생성, 입차 시 주차중 상태로 변경)
         orderRepository.save(Order.to(
-            orderRequest.carNumber(),
+            dto.carNumber(),
             ticket,
             member
         ));
 
         // 주차 현황 주차 차량수 추가
         pkltStatus.updateNowPrkVhclCnt();
+
+        return OrderResponse.CreateOrder.from(
+            ticket.getTicketId(), member.getMemberId(), dto.carNumber());
     }
 }
 

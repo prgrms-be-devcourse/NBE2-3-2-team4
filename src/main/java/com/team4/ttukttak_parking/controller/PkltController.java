@@ -1,10 +1,7 @@
 package com.team4.ttukttak_parking.controller;
 
-import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
-import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.*;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
-import com.team4.ttukttak_parking.domain.pkltstatus.dto.PkltStatusResponse;
-import com.team4.ttukttak_parking.domain.pkltstatus.service.PkltStatusService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,24 +26,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class PkltController {
 
     private final PkltService pkltService;
-    private final PkltStatusService pkltStatusService;
 
     @Operation(summary = "주차장 정보 조회 API", description = "주차장 정보를 조회합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}")
-    public ResponseEntity<ApiResponse<PkltResponse.Read>> getParkingLots(
+    public ResponseEntity<ApiResponse<GetPklt>> getPklt(
         @PathVariable Long pkltId) {
         return ResponseEntity.ok()
             .body(ApiResponse.createSuccess(pkltService.getPklt(pkltId)));
     }
 
-
     @Operation(summary = "좌표 근처 주차장 정보 조회 API", description = "좌표 근처 주차장 정보를 조회합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<PkltResponse.ReadNearby>>> getParkingLots(
+    public ResponseEntity<ApiResponse<List<GetNearbyPklt>>> getNearbyPklt(
         @Parameter(description = "위도") @RequestParam(value = "lat") BigDecimal lat,
         @Parameter(description = "경도") @RequestParam(value = "lng") BigDecimal lng) {
         return ResponseEntity.ok()
@@ -58,7 +53,7 @@ public class PkltController {
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}/info")
-    public ResponseEntity<ApiResponse<PkltInfoResponse.Read>> getParkingLotInfo(
+    public ResponseEntity<ApiResponse<GetPkltInfo>> getPkltInfo(
         @PathVariable Long pkltId) {
         return ResponseEntity.ok()
             .body(ApiResponse.createSuccess(pkltService.getPkltInfo(pkltId)));
@@ -68,10 +63,10 @@ public class PkltController {
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}/status")
-    public ResponseEntity<ApiResponse<PkltStatusResponse.Read>> getParkingLotStatus(
+    public ResponseEntity<ApiResponse<GetPkltStatus>> getPkltStatus(
         @PathVariable Long pkltId) {
         return ResponseEntity.ok()
-            .body(ApiResponse.createSuccess(pkltStatusService.getPkltStatus(pkltId)));
+            .body(ApiResponse.createSuccess(pkltService.getPkltStatus(pkltId)));
     }
 
 

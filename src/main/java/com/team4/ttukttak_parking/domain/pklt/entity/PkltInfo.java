@@ -2,10 +2,7 @@ package com.team4.ttukttak_parking.domain.pklt.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,10 +21,6 @@ public class PkltInfo {
     @Id
     private Long pkltCd;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pklt_id", nullable = false)
-    private Pklt pklt;
-
     private String prkTypeNm;       // 주차장 종류명
     private int wdOperBgngTm;       // 평일 운영 시작시간(HHMM)
     private int wdOperEndTm;        // 평일 운영 종료시간(HHMM)
@@ -40,10 +33,9 @@ public class PkltInfo {
     private int addPrkCrg;          // 추가 단위 요금
     private int addPrkHr;           // 추가 단위 시간(분 단위)
 
-    public static PkltInfo to(JsonNode data, Pklt pklt) {
+    public static PkltInfo to(JsonNode data) {
         return PkltInfo.builder()
             .pkltCd(data.get("pklt_cd").asLong())
-            .pklt(pklt)
             .prkTypeNm(data.get("prk_type_nm").asText())
             .wdOperBgngTm(data.get("wd_oper_bgng_tm").asInt())
             .wdOperEndTm(data.get("wd_oper_end_tm").asInt())

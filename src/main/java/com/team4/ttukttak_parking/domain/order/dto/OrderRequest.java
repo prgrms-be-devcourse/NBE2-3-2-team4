@@ -2,7 +2,7 @@ package com.team4.ttukttak_parking.domain.order.dto;
 
 public record OrderRequest() {
 
-    public record Order(
+    public record CreateOrder(
         Long ticketId,
         String carNumber
     ) {

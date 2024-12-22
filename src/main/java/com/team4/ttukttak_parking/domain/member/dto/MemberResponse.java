@@ -22,7 +22,7 @@ public record MemberResponse() {
         }
     }
 
-    public record Read(
+    public record GetMember(
         String name,
         String email,
         String contact,
@@ -32,8 +32,8 @@ public record MemberResponse() {
         LocalDateTime updatedAt
     ) {
 
-        public static Read from(Member member) {
-            return new Read(
+        public static GetMember from(Member member) {
+            return new GetMember(
                 member.getName(), member.getEmail(), member.getContact(), member.getLoginType(),
                 member.getRole(), member.getCreatedAt(), member.getUpdatedAt());
         }

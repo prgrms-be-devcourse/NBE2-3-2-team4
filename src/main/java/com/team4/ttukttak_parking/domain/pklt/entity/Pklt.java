@@ -39,8 +39,12 @@ public class Pklt {
     private String addr;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pkltStatusId")
+    @JoinColumn(name = "pklt_status_id")
     private PkltStatus pkltStatus;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pklt_info_id")
+    private PkltInfo pkltInfo;
 
     @OneToMany(mappedBy = "pklt", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
@@ -51,13 +55,19 @@ public class Pklt {
     @Column(precision = 16, scale = 10, nullable = false)
     private BigDecimal lot;
 
-    public static Pklt to(JsonNode data) {
+    public static Pklt to(JsonNode data, PkltInfo info, PkltStatus status) {
         return Pklt.builder()
             .pkltNm(data.get("pklt_nm").asText())
             .addr(data.get("addr").asText())
             .lat(BigDecimal.valueOf(data.get("lat").asDouble()))
             .lot(BigDecimal.valueOf(data.get("lot").asDouble()))
+            .pkltInfo(info)
+            .pkltStatus(status)
             .build();
+    }
+
+    public void regTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 
 }
