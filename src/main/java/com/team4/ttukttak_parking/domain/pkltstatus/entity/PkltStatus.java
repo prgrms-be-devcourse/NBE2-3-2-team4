@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -35,8 +33,7 @@ public class PkltStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pkltStatusId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pklt_id", nullable = false)
+    @OneToOne(mappedBy = "pkltStatus")
     private Pklt pklt;
 
     private int tpkct;          // 총 주차 면
@@ -55,5 +52,9 @@ public class PkltStatus {
 
     public void fixStreetPklt() {
         this.tpkct += 1;
+    }
+
+    public void updateNowPrkVhclCnt() {
+        this.nowPrkVhclCnt += 1;
     }
 }

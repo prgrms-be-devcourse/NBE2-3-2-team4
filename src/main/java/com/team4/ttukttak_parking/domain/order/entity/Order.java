@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,6 +29,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 @Table(name = "orders")
 public class Order {
 
@@ -55,5 +57,12 @@ public class Order {
     @CreatedDate
     private LocalDateTime createdAt;
 
-
+    public static Order to(String carNum, Ticket ticket, Member member) {
+        return Order.builder()
+            .carNum(carNum)
+            .ticket(ticket)
+            .member(member)
+            .status(ParkingStatus.WAITING)
+            .build();
+    }
 }
