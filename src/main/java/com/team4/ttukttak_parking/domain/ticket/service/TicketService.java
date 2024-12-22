@@ -68,9 +68,15 @@ public class TicketService {
                 throw new NotFoundException(ErrorCode.PKLT_NOT_DATA_FOUND);
 
             }*/
+            int bscPrkCrg = pkltInfo.getBscPrkCrg();
+            int bscPrkHr = pkltInfo.getBscPrkHr();
+            if (bscPrkCrg == 0 || bscPrkHr !=5) {  //요금이 0이거나 추가요금단위가 5인애들 요금260으로 통일
+                bscPrkCrg = 260;
+            }
 
-            int bscPrice = pkltInfo.getBscPrkCrg()*24;//기본요금(2시간권 가격)
-            int addPrice = pkltInfo.getAddPrkCrg()*12;//추가요금(1시간 단위)
+
+            int bscPrice =bscPrkCrg*24 ;//기본요금(2시간권 가격)
+            int addPrice =pkltInfo.getAddPrkCrg()*12 ;//추가요금(1시간 단위)
 
             List<Ticket> tickets = new ArrayList<>();
             tickets.add(Ticket.to(pklt, bscPrice,2));
