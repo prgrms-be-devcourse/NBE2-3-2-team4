@@ -75,8 +75,8 @@ public class TicketService {
             }
 
 
-            int bscPrice =bscPrkCrg*24 ;//기본요금(2시간권 가격)
-            int addPrice =pkltInfo.getAddPrkCrg()*12 ;//추가요금(1시간 단위)
+            int bscPrice =bscPrkCrg*24;   //기본요금(2시간권 가격)
+            int addPrice =pkltInfo.getAddPrkCrg()*12;   //추가요금(1시간 단위)
 
             List<Ticket> tickets = new ArrayList<>();
             tickets.add(Ticket.to(pklt, bscPrice,2));
