@@ -23,13 +23,14 @@ public record PkltResponse() {
 
 
     public record ReadNearby(
-        Long id,
+        Long pkltId,
         BigDecimal latitude,
-        BigDecimal longitude
+        BigDecimal longitude,
+        String status
     ) {
 
-        public static ReadNearby from(Pklt pklt) {
-            return new ReadNearby(pklt.getPkltId(), pklt.getLat(), pklt.getLot());
+        public static ReadNearby from(Pklt pklt, String status) {
+            return new ReadNearby(pklt.getPkltId(), pklt.getLat(), pklt.getLot(), status);
         }
     }
 
@@ -50,5 +51,6 @@ public record PkltResponse() {
             );
         }
     }
+
 
 }
