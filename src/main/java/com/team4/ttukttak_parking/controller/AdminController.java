@@ -57,4 +57,17 @@ public class AdminController {
         );
     }
 
+
+
+    @Operation(summary = "주차장 별 주차권 데이터 생성 ", description = "주차장 별로 주차권 데이터를 생성 후 저장합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
+    })
+    @PostMapping("/tickets/s")
+    public ResponseEntity<ApiResponse<Void>> saveTicketsDataList() {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse.createSuccess(ticketService.addPkltTicket())
+        );
+    }
+
 }
