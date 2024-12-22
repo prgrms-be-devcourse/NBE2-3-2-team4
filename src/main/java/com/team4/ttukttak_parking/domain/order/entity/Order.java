@@ -47,10 +47,6 @@ public class Order {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "pklt_id", nullable = false)
-    private Pklt pklt;
-
     @Enumerated(EnumType.STRING)
     private ParkingStatus status;
 

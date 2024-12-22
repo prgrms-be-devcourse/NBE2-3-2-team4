@@ -44,7 +44,7 @@ public class OrderService {
 
         int total = ticket.getPrice(); // 현재는 할인 혜택 없음
 
-        // 주차권 주문 생성 (결제 대기 상태로 생성, 결제 성공시 주차중 상태로 변경)
+        // 주차권 주문 생성 (주차 대기 상태로 생성, 입차 시 주차중 상태로 변경)
         orderRepository.save(Order.to(
             orderRequest.carNumber(),
             ticket,
