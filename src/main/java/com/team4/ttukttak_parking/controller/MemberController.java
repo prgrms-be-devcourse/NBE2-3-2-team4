@@ -1,7 +1,7 @@
 package com.team4.ttukttak_parking.controller;
 
 import com.team4.ttukttak_parking.domain.member.dto.MemberRequest;
-import com.team4.ttukttak_parking.domain.member.dto.MemberResponse;
+import com.team4.ttukttak_parking.domain.member.dto.MemberResponse.GetMember;
 import com.team4.ttukttak_parking.domain.member.service.MemberService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +31,7 @@ public class MemberController {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/info")
-    public ResponseEntity<ApiResponse<MemberResponse.Read>> getMemberInfo(
+    public ResponseEntity<ApiResponse<GetMember>> getMemberInfo(
         @AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(
             ApiResponse.createSuccess(memberService.getMemberInfo(user.getUsername())));

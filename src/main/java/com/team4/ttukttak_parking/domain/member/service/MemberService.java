@@ -44,8 +44,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberResponse.Read getMemberInfo(String email) {
-        return MemberResponse.Read.from(
+    public MemberResponse.GetMember getMemberInfo(String email) {
+        return MemberResponse.GetMember.from(
             memberRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND)));
     }

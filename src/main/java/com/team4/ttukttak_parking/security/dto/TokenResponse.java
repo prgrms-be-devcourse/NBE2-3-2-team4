@@ -2,7 +2,6 @@ package com.team4.ttukttak_parking.security.dto;
 
 public record TokenResponse() {
 
-
     public record Create(
         String accessToken,
         String refreshToken,

@@ -30,7 +30,7 @@ public class AuthController {
     private final CustomUserDetailService userDetailService;
     private final MemberService memberService;
 
-    @Operation(summary = "ADMIN 회원가입 API", description = "ADMIN 회원 가입을 진행합니다.")
+    @Operation(summary = "관리자 회원가입 API", description = "관리자 회원 가입을 진행합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
     })
@@ -52,7 +52,7 @@ public class AuthController {
             ApiResponse.createSuccess(memberService.join(dto)));
     }
 
-    @Operation(summary = "Reissue API", description = "Refresh Token 을 통해 AccessToken, RefreshToken 모두 재발급합니다.")
+    @Operation(summary = "토큰 재발급 API", description = "리프레쉬 토큰 을 통해 엑세스 토큰, 리프레쉬 토큰 모두 재발급합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
     })
@@ -63,7 +63,7 @@ public class AuthController {
             .body(ApiResponse.createSuccess(userDetailService.updateToken(dto.refreshToken())));
     }
 
-    @Operation(summary = "로그인 API", description = "회원 로그인 진행 & JWT 발급")
+    @Operation(summary = "로그인 API", description = "회원 로그인 진행하고 토큰을 발급합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
