@@ -39,6 +39,7 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
     PKLT_ALREADY_PARKED(400, -4002, "이미 주차 중인 차량입니다."),
 
     //-5000: TICKET
+    TICKET_NOT_FOUND(404, -5000, "주차권을 찾을 수 없습니다."),
     TICKET_ALREADY_EXIST(400, -5001, "해당 주차권이 이미 존재합니다.");
 
     // 1. status = 날려줄 상태코드
