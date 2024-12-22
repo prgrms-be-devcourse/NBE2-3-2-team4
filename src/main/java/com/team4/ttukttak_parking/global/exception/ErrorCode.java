@@ -37,7 +37,7 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
     PKLT_NOT_FOUND(404, -4000, "해당 주차장을 찾을 수 없습니다."),
     PKLT_FULL(400, -4001, "해당 주차장이 가득 찼습니다."),
     PKLT_ALREADY_PARKED(400, -4002, "이미 주차 중인 차량입니다."),
-
+    PKLT_NOT_DATA_FOUND(404,-4003,"현재 운영하지 않는 주차장입니다"),
     //-5000: TICKET
     TICKET_NOT_FOUND(404, -5000, "주차권을 찾을 수 없습니다."),
     TICKET_ALREADY_EXIST(400, -5001, "해당 주차권이 이미 존재합니다.");
