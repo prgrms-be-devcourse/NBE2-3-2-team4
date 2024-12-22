@@ -2,8 +2,8 @@ package com.team4.ttukttak_parking.controller;
 
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltInfoResponse;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
-import com.team4.ttukttak_parking.domain.pkltstatus.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
+import com.team4.ttukttak_parking.domain.pkltstatus.dto.PkltStatusResponse;
 import com.team4.ttukttak_parking.domain.pkltstatus.service.PkltStatusService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,8 +68,11 @@ public class PkltController {
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
     @GetMapping("/{pkltId}/status")
-    public ResponseEntity<PkltStatusResponse.Read> getParkingLotStatus(@PathVariable Long pkltId) {
-        return ResponseEntity.ok().body(pkltStatusService.getPkltStatus(pkltId));
+    public ResponseEntity<ApiResponse<PkltStatusResponse.Read>> getParkingLotStatus(
+        @PathVariable Long pkltId) {
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(pkltStatusService.getPkltStatus(pkltId)));
     }
+
 
 }
