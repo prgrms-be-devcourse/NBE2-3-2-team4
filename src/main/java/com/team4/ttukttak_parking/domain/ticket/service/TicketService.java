@@ -4,6 +4,7 @@ import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltInfoRepository;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltRepository;
+import com.team4.ttukttak_parking.domain.ticket.dto.TicketResponseDto;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
@@ -11,6 +12,8 @@ import com.team4.ttukttak_parking.global.exception.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,5 +97,21 @@ public class TicketService {
         }
         return null;
 
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<TicketResponseDto.Read> getPkltTickets(Long pkltId) {
+        // 주차장 ID로 주차장 정보 조회
+        Pklt pklt = pkltRepository.findById(pkltId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        // 해당 주차장의 주차권 리스트 조회
+        List<Ticket> tickets = ticketRepository.findByPklt(pklt);
+
+        // DTO로 변환하여 반환
+        return tickets.stream()
+                .map(TicketResponseDto.Read::from)
+                .collect(Collectors.toList());
     }
 }
