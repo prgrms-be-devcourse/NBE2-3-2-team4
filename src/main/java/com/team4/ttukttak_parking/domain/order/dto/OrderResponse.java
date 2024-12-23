@@ -1,6 +1,11 @@
 package com.team4.ttukttak_parking.domain.order.dto;
 
-public record OrderResponse() {
+import com.team4.ttukttak_parking.domain.order.entity.Order;
+
+
+public record OrderResponse(
+
+) {
 
     public record CreateOrder(
         Long ticketId,
@@ -13,4 +18,12 @@ public record OrderResponse() {
         }
     }
 
+    public record GetOrder(
+        Order order
+    ) {
+
+        public static GetOrder from(Order order) {
+            return new GetOrder(order);
+        }
+    }
 }

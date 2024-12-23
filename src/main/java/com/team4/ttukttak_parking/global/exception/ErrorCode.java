@@ -40,7 +40,12 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
 
     //-5000: TICKET
     TICKET_NOT_FOUND(404, -5000, "주차권을 찾을 수 없습니다."),
-    TICKET_ALREADY_EXIST(400, -5001, "해당 주차권이 이미 존재합니다.");
+    TICKET_ALREADY_EXIST(400, -5001, "해당 주차권이 이미 존재합니다."),
+
+    //-6000: Order
+    ORDER_NOT_FOUND(404, -6000, "주문을 찾을 수 없습니다"),
+
+    ;
 
     // 1. status = 날려줄 상태코드
     // 2. code = 해당 오류가 어느부분과 관련있는지 카테고리화 해주는 코드. 예외 원인 식별하기 편하기에 추가

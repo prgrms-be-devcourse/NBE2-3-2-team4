@@ -1,6 +1,10 @@
 package com.team4.ttukttak_parking.controller;
 
-import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.*;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetNearbyPklt;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetPklt;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetPkltInfo;
+import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetPkltStatus;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,9 +15,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,5 +75,14 @@ public class PkltController {
             .body(ApiResponse.createSuccess(pkltService.getPkltStatus(pkltId)));
     }
 
-
+    @Operation(summary = "주차장 입차 API", description = "주차장에 입차합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @PostMapping("/{pkltId}/enter")
+    public ResponseEntity<ApiResponse<PkltResponse.EnterPklt>> enterPklt(
+        @Parameter(description = "차량 번호") @RequestParam(value = "carNum") String carNum,
+        @PathVariable Long pkltId) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(ApiResponse.createSuccess(pkltService.enterPklt(carNum, pkltId)));
+    }
 }

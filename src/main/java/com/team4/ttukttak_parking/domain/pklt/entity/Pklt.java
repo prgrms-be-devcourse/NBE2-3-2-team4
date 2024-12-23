@@ -2,6 +2,7 @@ package com.team4.ttukttak_parking.domain.pklt.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -49,6 +50,9 @@ public class Pklt {
     @OneToMany(mappedBy = "pklt", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
 
+    @OneToMany(mappedBy = "pklt", cascade = CascadeType.ALL)
+    private List<PkltStatusDetail> statusDetails = new ArrayList<>();
+
     @Column(precision = 16, scale = 10, nullable = false)
     private BigDecimal lat;
 
@@ -69,5 +73,4 @@ public class Pklt {
     public void regTicket(Ticket ticket) {
         this.tickets.add(ticket);
     }
-
 }

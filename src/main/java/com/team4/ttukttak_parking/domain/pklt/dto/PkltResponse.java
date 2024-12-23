@@ -21,7 +21,6 @@ public record PkltResponse() {
         }
     }
 
-
     public record GetNearbyPklt(
         Long pkltId,
         BigDecimal latitude,
@@ -29,7 +28,8 @@ public record PkltResponse() {
         String status
     ) {
 
-        public static GetNearbyPklt from(com.team4.ttukttak_parking.domain.pklt.entity.Pklt pklt, String status) {
+        public static GetNearbyPklt from(com.team4.ttukttak_parking.domain.pklt.entity.Pklt pklt,
+            String status) {
             return new GetNearbyPklt(pklt.getPkltId(), pklt.getLat(), pklt.getLot(), status);
         }
     }
@@ -73,5 +73,14 @@ public record PkltResponse() {
         }
     }
 
+    public record EnterPklt(
+        String carNum,
+        Long pkltId
+    ) {
+
+        public static EnterPklt from(String carNum, Long pkltId) {
+            return new EnterPklt(carNum, pkltId);
+        }
+    }
 
 }
