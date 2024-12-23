@@ -40,15 +40,15 @@ public class OrderController {
             .body(ApiResponse.createSuccess(orderService.createOrder(dto, user.getUsername())));
     }
 
-//    @Operation(summary = "주차권 구매 기록 상세 조회 API", description = "주차권 구매 세부 기록을 조회합니다.")
-//    @ApiResponses({
-//        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
-//    @GetMapping("{orderId}")
-//    public ResponseEntity<ApiResponse<OrderResponse.GetOrder>> getOrder(
-//        @PathVariable Long orderId) {
-//        return ResponseEntity.ok()
-//            .body(ApiResponse.createSuccess(orderService.getOrder(orderId)));
-//    }
+    @Operation(summary = "주차권 구매 기록 상세 조회 API", description = "주차권 구매 세부 기록을 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("{orderId}")
+    public ResponseEntity<ApiResponse<OrderResponse.GetOrder>> getOrder(
+        @PathVariable Long orderId) {
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(orderService.getOrder(orderId)));
+    }
 
 
 }
