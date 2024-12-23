@@ -8,6 +8,7 @@ import com.team4.ttukttak_parking.domain.order.entity.Order;
 import com.team4.ttukttak_parking.domain.order.repository.OrderRepository;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
 import com.team4.ttukttak_parking.global.exception.BadRequestException;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -36,6 +39,14 @@ public class OrderService {
         // 해당 주차권 검색
         final Ticket ticket = ticketRepository.findById(dto.ticketId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
+
+        if (orderRepository.existsByCarNumAndAndStatus(dto.carNumber(), ParkingStatus.WAITING)) {
+            throw new BadRequestException(ErrorCode.ALREADY_ORDERED);
+        }
+
+        if (orderRepository.existsByCarNumAndAndStatus(dto.carNumber(), ParkingStatus.PARKING)) {
+            throw new BadRequestException(ErrorCode.PKLT_ALREADY_PARKED);
+        }
 
         Pklt pklt = ticket.getPklt();
 

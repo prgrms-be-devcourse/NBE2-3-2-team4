@@ -44,7 +44,7 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
 
     //-6000: Order
     ORDER_NOT_FOUND(404, -6000, "주문을 찾을 수 없습니다"),
-
+    ALREADY_ORDERED(400, -6001, "주차권이 이미 주문되었습니다."),
     ;
 
     // 1. status = 날려줄 상태코드
