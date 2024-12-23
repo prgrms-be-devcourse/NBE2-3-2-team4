@@ -34,6 +34,13 @@ public class PkltInfo {
     private int addPrkHr;           // 추가 단위 시간(분 단위)
 
     public static PkltInfo to(JsonNode data) {
+        int addPrice = data.get("add_prk_crg").asInt();
+        int addTime = data.get("add_prk_hr").asInt();
+
+        if (data.get("add_prk_crg").asInt() == 0) {
+            addPrice = 220;
+            addTime = 5;
+        }
         return PkltInfo.builder()
             .pkltCd(data.get("pklt_cd").asLong())
             .prkTypeNm(data.get("prk_type_nm").asText())
@@ -45,8 +52,8 @@ public class PkltInfo {
             .lhldyOperEndTm(data.get("lhldy_oper_end_tm").asInt())
             .bscPrkCrg(data.get("bsc_prk_crg").asInt())
             .bscPrkHr(data.get("bsc_prk_hr").asInt())
-            .addPrkCrg(data.get("add_prk_crg").asInt())
-            .addPrkHr(data.get("add_prk_hr").asInt())
+            .addPrkCrg(addPrice)
+            .addPrkHr(addTime)
             .build();
     }
 }

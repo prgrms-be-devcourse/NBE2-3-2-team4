@@ -2,6 +2,8 @@ package com.team4.ttukttak_parking.domain.pklt.dto;
 
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
+
 import java.math.BigDecimal;
 
 
@@ -80,6 +82,20 @@ public record PkltResponse() {
 
         public static EnterPklt from(String carNum, Long pkltId) {
             return new EnterPklt(carNum, pkltId);
+        }
+    }
+
+    public record ExitPklt( // 주차장, 차 넘버, 상태, 입차 시간, 출차 시간, 주차 요금, 추가 요금
+            Long pkltId,
+            String carNum,
+            ParkingStatus status,
+            String enterTime,
+            String exitTime,
+            int parkingFee,
+            int addFee
+    ) {
+        public static ExitPklt from(Long pkltId, String carNum, ParkingStatus status, String enterTime, String exitTime, int parkingFee, int addFee) {
+            return new ExitPklt( pkltId, carNum, status, enterTime, exitTime, parkingFee, addFee);
         }
     }
 

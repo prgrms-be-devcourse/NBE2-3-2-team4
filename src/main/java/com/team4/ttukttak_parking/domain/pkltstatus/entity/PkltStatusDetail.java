@@ -39,10 +39,12 @@ public class PkltStatusDetail {
     @CreatedDate
     private LocalDateTime startTime;
 
+
     private LocalDateTime endTime;
 
     public static PkltStatusDetail to(Pklt pklt) {
         return PkltStatusDetail.builder().pklt(pklt).build();
     }
 
+    public void exit(LocalDateTime curr) {this.endTime = curr;}
 }

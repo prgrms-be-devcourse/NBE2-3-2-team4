@@ -17,6 +17,7 @@ import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -55,15 +56,15 @@ public class PkltService {
         double KM = 0.3;
         double lngDifference = KM / 111 / (Math.cos(lat.doubleValue()));
 
-        Predicate<com.team4.ttukttak_parking.domain.pklt.entity.Pklt> latFilter = pklt ->
+        Predicate<Pklt> latFilter = pklt ->
             pklt.getLat().doubleValue() > lat.doubleValue() - (KM / 111)
                 && lat.doubleValue() + (KM / 111) > pklt.getLat().doubleValue();
-        Predicate<com.team4.ttukttak_parking.domain.pklt.entity.Pklt> lngFilter = pklt ->
+        Predicate<Pklt> lngFilter = pklt ->
             pklt.getLot().doubleValue() > lng.doubleValue() - lngDifference
                 && pklt.getLot().doubleValue() < lng.doubleValue() + lngDifference;
 
         // 필터링된 주차장 리스트
-        List<com.team4.ttukttak_parking.domain.pklt.entity.Pklt> nearbyPkltList = pkltRepository.findAll().stream()
+        List<Pklt> nearbyPkltList = pkltRepository.findAll().stream()
             .filter(latFilter.and(lngFilter)).toList();
 
         return calculateCongestionAndSort(nearbyPkltList);
@@ -71,7 +72,7 @@ public class PkltService {
 
     @Transactional(readOnly = true)
     public PkltResponse.GetPkltStatus getPkltStatus(Long pkltId) {
-        com.team4.ttukttak_parking.domain.pklt.entity.Pklt pklt = pkltRepository.findById(pkltId)
+        Pklt pklt = pkltRepository.findById(pkltId)
             .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
 
         PkltStatus pkltStatus = pklt.getPkltStatus();
@@ -146,7 +147,7 @@ public class PkltService {
                     bscPrkHr = 5;
                 }
 
-                int result = (bscPrkCrg / bscPrkHr ) * 60 * num;
+                int result = (bscPrkCrg / bscPrkHr) * 60 * num;
 
                 pklt.regTicket(Ticket.to(pklt, result, num));
             }
@@ -168,6 +169,40 @@ public class PkltService {
         order.enterPklt(statusDetail);
 
         return PkltResponse.EnterPklt.from(carNum, pkltId);
+    }
+
+    @Transactional
+    public PkltResponse.ExitPklt exitPklt(String carNum, Long pkltId) {
+        final Pklt pklt = pkltRepository.findById(pkltId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        final Order order = orderRepository.findByCarNumAndStatus(carNum, ParkingStatus.PARKING)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+
+        final PkltInfo pkltInfo = pklt.getPkltInfo();
+
+        final PkltStatusDetail statusDetail = order.getStatusDetail();
+
+        LocalDateTime currTime = LocalDateTime.now();
+        LocalDateTime exitTime = statusDetail.getStartTime()
+            .plusHours(order.getTicket().getPkDuration()).plusMinutes(10);
+
+        int lateFee = 0;
+
+        if (currTime.isAfter(exitTime)) {
+            int min = pkltInfo.getAddPrkHr();
+            int fee = pkltInfo.getAddPrkCrg();
+            int diff = (int) (currTime.toEpochSecond(null) - exitTime.toEpochSecond(null)) / 60;
+            lateFee = (diff / min) * fee;
+        }
+
+        statusDetail.exit(currTime);
+        order.setStatus(ParkingStatus.EXITED);
+        pklt.getPkltStatus().exitPkltCnt();
+
+        return PkltResponse.ExitPklt.from(pkltId, carNum, ParkingStatus.EXITED,
+            statusDetail.getStartTime().toLocalTime().toString(),
+            currTime.toLocalTime().toString(), order.getTicket().getPrice(), lateFee);
     }
 }
 

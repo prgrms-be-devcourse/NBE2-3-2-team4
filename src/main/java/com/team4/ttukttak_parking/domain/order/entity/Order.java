@@ -22,11 +22,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -71,5 +73,9 @@ public class Order {
     public void enterPklt(PkltStatusDetail statusDetail) {
         this.statusDetail = statusDetail;
         this.status = ParkingStatus.PARKING;
+    }
+
+    public void updateParkingStatus(ParkingStatus parkingStatus){
+        this.status = parkingStatus;
     }
 }
