@@ -14,6 +14,7 @@ import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.dto.TicketResponse;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
+import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class PkltService {
 
     private final PkltRepository pkltRepository;
     private final OrderRepository orderRepository;
+    private final TicketRepository ticketRepository;
 
     @Transactional(readOnly = true)
     public PkltResponse.GetPklt getPklt(Long pkltId) {
@@ -207,13 +209,15 @@ public class PkltService {
     }
     @Transactional
     public List<TicketResponse> getPkltTicketList(Long pkltId) {
-        List<Pklt> pkltList = pkltRepository.findAll();
+        // 주차장 ID로 주차장 정보 조회
+        Pklt pklt = pkltRepository.findById(pkltId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
 
-        for (Pklt pklt : pkltList) {
+        // 해당 주차장의 주차권 리스트 조회
+        List<Ticket> tickets = ticketRepository.findByPklt(pklt);
 
-            List<Ticket> tickets=pklt.getTickets(pkltId);
+        return TicketResponse.from(tickets.get())
 
-        }
     }
 }
 
