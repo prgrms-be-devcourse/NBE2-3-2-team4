@@ -12,6 +12,7 @@ import com.team4.ttukttak_parking.domain.pklt.repository.PkltRepository;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
+import com.team4.ttukttak_parking.domain.ticket.dto.TicketResponse;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
@@ -203,6 +204,16 @@ public class PkltService {
         return PkltResponse.ExitPklt.from(pkltId, carNum, ParkingStatus.EXITED,
             statusDetail.getStartTime().toLocalTime().toString(),
             currTime.toLocalTime().toString(), order.getTicket().getPrice(), lateFee);
+    }
+    @Transactional
+    public List<TicketResponse> getPkltTicketList(Long pkltId) {
+        List<Pklt> pkltList = pkltRepository.findAll();
+
+        for (Pklt pklt : pkltList) {
+
+            List<Ticket> tickets=pklt.getTickets(pkltId);
+
+        }
     }
 }
 
