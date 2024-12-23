@@ -39,10 +39,16 @@ public class PkltStatusDetail {
     @CreatedDate
     private LocalDateTime startTime;
 
+    private int lateFee;
+
     private LocalDateTime endTime;
 
     public static PkltStatusDetail to(Pklt pklt) {
         return PkltStatusDetail.builder().pklt(pklt).build();
     }
 
+    public void exit(LocalDateTime curr,int lateFee) {
+        this.lateFee = lateFee;
+        this.endTime = curr;
+    }
 }

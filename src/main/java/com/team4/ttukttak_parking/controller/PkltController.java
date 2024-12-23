@@ -85,4 +85,15 @@ public class PkltController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ApiResponse.createSuccess(pkltService.enterPklt(carNum, pkltId)));
     }
+
+    @Operation(summary = "주차장 출차 API", description = "주차장에서 출차합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @PostMapping("/{pkltId}/exit")
+    public ResponseEntity<ApiResponse<PkltResponse.ExitPklt>> exitPklt(
+        @Parameter(description = "차량 번호") @RequestParam(value = "carNum") String carNum,
+        @PathVariable Long pkltId) {
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(pkltService.exitPklt(carNum, pkltId)));
+    }
 }
