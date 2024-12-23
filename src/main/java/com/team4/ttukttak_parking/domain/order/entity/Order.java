@@ -74,4 +74,8 @@ public class Order {
         this.statusDetail = statusDetail;
         this.status = ParkingStatus.PARKING;
     }
+
+    public void updateParkingStatus(ParkingStatus parkingStatus){
+        this.status = parkingStatus;
+    }
 }
