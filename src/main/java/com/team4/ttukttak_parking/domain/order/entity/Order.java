@@ -1,22 +1,12 @@
 package com.team4.ttukttak_parking.domain.order.entity;
 
 import com.team4.ttukttak_parking.domain.member.entity.Member;
+import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -52,6 +42,8 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "pklt_status_detail_id")
     private PkltStatusDetail statusDetail;
+
+
 
     @Enumerated(EnumType.STRING)
     private ParkingStatus status;

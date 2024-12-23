@@ -2,6 +2,10 @@ package com.team4.ttukttak_parking.domain.order.dto;
 
 import com.team4.ttukttak_parking.domain.order.entity.Order;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+
 
 public record OrderResponse(
 
@@ -26,4 +30,17 @@ public record OrderResponse(
             return new GetOrder(order);
         }
     }
+
+
+    public record OrderList(
+            String carNum,
+            BigDecimal price,
+            DateFormat createdAt,
+            String pkltNm
+    ) {
+//        public static OrderList from(String carNum, BigDecimal price, LocalDateTime createdAt,String pkltNm ) {
+//            return new OrderList(carNum, price, createdAt ,pkltNm);
+//        }
+    }
+
 }

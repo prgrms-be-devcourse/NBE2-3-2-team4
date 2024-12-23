@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
@@ -49,6 +51,16 @@ public class OrderController {
 //        return ResponseEntity.ok()
 //            .body(ApiResponse.createSuccess(orderService.getOrder(orderId)));
 //    }
+
+    @Operation(summary = "회원별 주차권 구매 기록 조회 API", description = "회원별 주차권 구매기록 리스트를 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("/orderlist")
+    public ResponseEntity<ApiResponse<List<OrderResponse.OrderList>>> getOrderListByMemberId(
+        @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(orderService.getOrderListByMemberId(user.getUsername())));
+    }
 
 
 }

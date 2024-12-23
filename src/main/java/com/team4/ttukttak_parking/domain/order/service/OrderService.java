@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -56,6 +58,15 @@ public class OrderService {
 
         return OrderResponse.CreateOrder.from(
             ticket.getTicketId(), member.getMemberId(), dto.carNumber());
+    }
+
+    public List<OrderResponse.OrderList> getOrderListByMemberId(String email) {
+
+        // 회원 email을 통해 구매한 주차권 목록 가져오기
+        List<OrderResponse.OrderList> lists = orderRepository.findOrderList(email)
+                     .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
+
+        return lists ;
     }
 
 
