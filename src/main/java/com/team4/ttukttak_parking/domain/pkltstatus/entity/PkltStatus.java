@@ -49,4 +49,6 @@ public class PkltStatus {
     public void updateNowPrkVhclCnt() {
         this.nowPrkVhclCnt += 1;
     }
+
+    public void exitPkltCnt() { this.nowPrkVhclCnt -= 1; }
 }
