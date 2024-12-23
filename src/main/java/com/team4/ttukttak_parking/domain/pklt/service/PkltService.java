@@ -195,7 +195,7 @@ public class PkltService {
             lateFee = (diff / min) * fee;
         }
 
-        statusDetail.exit(currTime, lateFee);
+        statusDetail.exit(currTime);
         order.setStatus(ParkingStatus.EXITED);
         pklt.getPkltStatus().exitPkltCnt();
 
