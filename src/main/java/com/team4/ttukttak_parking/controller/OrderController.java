@@ -13,12 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +27,7 @@ public class OrderController {
     @Operation(summary = "주차권 주문 요청 API", description = "주차권 구매를 요청합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")})
-    @PostMapping()
+    @PostMapping("/tickets")
     public ResponseEntity<ApiResponse<OrderResponse.CreateOrder>> createOrder(
         @RequestBody CreateOrder dto,
         @AuthenticationPrincipal User user) {
@@ -50,5 +45,14 @@ public class OrderController {
             .body(ApiResponse.createSuccess(orderService.getOrder(orderId)));
     }
 
+
+    @Operation(summary = "주차권 취소 요청 API", description = "주차권 취소를 요청합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")})
+    @PutMapping("/{orderId}/cancel")
+    public ResponseEntity<ApiResponse<String>> cancelTicket(@AuthenticationPrincipal User user, @PathVariable Long orderId){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.createSuccess(orderService.cancelTicket(user.getUsername(),orderId)));
+    }
 
 }
