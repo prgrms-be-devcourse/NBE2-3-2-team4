@@ -3,11 +3,15 @@ package com.team4.ttukttak_parking.domain.pklt.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team4.ttukttak_parking.domain.order.entity.Order;
+import com.team4.ttukttak_parking.domain.order.repository.OrderRepository;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pklt.entity.PkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.repository.PkltRepository;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
+import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
@@ -28,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PkltService {
 
     private final PkltRepository pkltRepository;
+    private final OrderRepository orderRepository;
 
     @Transactional(readOnly = true)
     public PkltResponse.GetPklt getPklt(Long pkltId) {
@@ -148,6 +153,21 @@ public class PkltService {
         }
 
         return null;
+    }
+
+    @Transactional
+    public PkltResponse.EnterPklt enterPklt(String carNum, Long pkltId) {
+        final Pklt pklt = pkltRepository.findById(pkltId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        final Order order = orderRepository.findByCarNumAndStatus(carNum, ParkingStatus.WAITING)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+
+        PkltStatusDetail statusDetail = PkltStatusDetail.to(pklt);
+
+        order.enterPklt(statusDetail);
+
+        return PkltResponse.EnterPklt.from(carNum, pkltId);
     }
 }
 
