@@ -6,6 +6,7 @@ import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetPklt;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetPkltInfo;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse.GetPkltStatus;
 import com.team4.ttukttak_parking.domain.pklt.service.PkltService;
+import com.team4.ttukttak_parking.domain.ticket.dto.TicketResponse;
 import com.team4.ttukttak_parking.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -95,5 +96,17 @@ public class PkltController {
         @PathVariable Long pkltId) {
         return ResponseEntity.ok()
             .body(ApiResponse.createSuccess(pkltService.exitPklt(carNum, pkltId)));
+    }
+
+
+
+    @Operation(summary = "주차장별 주차권 리스트 조회", description = "주차장별 주차권 리스트를 조회합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("/{pkltId}/tickets")
+    public ResponseEntity<ApiResponse<List<TicketResponse>>> getPkltTickets(
+            @PathVariable Long pkltId) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.createSuccess(pkltService.getPkltTicketList(pkltId)));
     }
 }

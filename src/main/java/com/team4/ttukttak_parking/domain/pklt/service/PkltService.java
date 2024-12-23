@@ -20,6 +20,7 @@ import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -215,8 +216,15 @@ public class PkltService {
 
         // 해당 주차장의 주차권 리스트 조회
         List<Ticket> tickets = ticketRepository.findByPklt(pklt);
+        //반환할 티켓 리스폰스 dto 리스트 생성
+        List<TicketResponse> ticketResponses = new ArrayList<>();
 
-        return TicketResponse.from(tickets.get())
+        //dto리스폰스에 티캣 담기
+        for (Ticket ticket : tickets) {
+            ticketResponses.add(TicketResponse.from(ticket));
+        }
+
+        return ticketResponses;
 
     }
 }
