@@ -227,6 +227,20 @@ public class PkltService {
         return ticketResponses;
 
     }
+
+    @Transactional(readOnly = true)
+    public PkltResponse.getPKltTicketDetail getPKltTicketDetail(Long pkltId,Long ticketId){
+
+
+
+
+
+
+
+        return null;
+
+    }
+
 }
 
 

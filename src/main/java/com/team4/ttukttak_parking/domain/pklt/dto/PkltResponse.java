@@ -99,4 +99,18 @@ public record PkltResponse() {
         }
     }
 
+    public record getPKltTicketDetail(
+            String pkltName,//주차장 이름
+            String address, //주차장 주소
+            int pkltTime,//운영 시간
+            String ticketType,//주차권 종류
+            String carNumber,//차량번호
+            int addFee,//추가 요금
+            int addHour,//추가 요금 시간 단위
+            int totalFee//총금액
+
+    ){
+
+    }
+
 }
