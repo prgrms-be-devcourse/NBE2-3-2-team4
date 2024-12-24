@@ -18,7 +18,7 @@
       background-color: #f8f9fa;
       color: #333;
       margin: 0;
-      padding: 0;
+      padding: 0;G
       display: flex;
       justify-content: center;
       align-items: center;
@@ -26,8 +26,8 @@
     }
 
     .container {
-      width: 400px; /* 기본 가로 크기 */
-      height: 800px; /* 세로를 2배로 확장 */
+      width: 400px;
+      height: 800px;
       margin: 0 auto;
       background: #fff;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -54,6 +54,15 @@
 
     .user-icon {
       font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .back-button {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
     }
 
     /* Main */
@@ -68,8 +77,8 @@
     }
 
     .card {
-      width: 80%; /* 카드의 너비 */
-      height: 200px; /* 카드 높이를 크게 조정 */
+      width: 80%;
+      height: 200px;
       background-color: #f1f3f5;
       display: flex;
       flex-direction: column;
@@ -80,18 +89,18 @@
     }
 
     .greeting {
-      font-size: 1.8rem; /* 텍스트 크기 */
-      font-weight: bold; /* 강조 */
+      font-size: 1.8rem;
+      font-weight: bold;
       margin-bottom: 0.5rem;
     }
 
     .user-name {
       font-weight: bold;
-      color: #007bff; /* 색상 추가 */
+      color: #007bff;
     }
 
     .question {
-      font-size: 1.3rem; /* 텍스트 크기 */
+      font-size: 1.3rem;
       margin-top: 0.5rem;
     }
 
@@ -131,12 +140,22 @@
       text-decoration: underline;
     }
   </style>
+  <script>
+    function goBack() {
+      window.history.back(); // 이전 페이지로 돌아가기
+    }
+
+    function goHome() {
+      window.location.href = "/ttukttak-parking/"; // 홈 페이지로 이동 ("/"를 홈 URL로 수정)
+    }
+  </script>
 </head>
 <body>
 <div class="container">
   <header class="header">
+    <button class="back-button" onclick="goBack()">&larr;</button>
     <h1 class="logo">똑딱파킹 🚗</h1>
-    <div class="user-icon">👤</div>
+    <div class="user-icon" onclick="goHome()">👤</div>
   </header>
   <main class="main">
     <div class="card">
@@ -159,4 +178,3 @@
 </script>
 </body>
 </html>
-

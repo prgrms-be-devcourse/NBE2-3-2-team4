@@ -28,4 +28,15 @@ public class FrontController {
         return "memberpark";
     }
 
+    @GetMapping("/member-park-record")
+    public String parkMemberRecord() {
+        return "memberparkrecord";
+    }
+
+
+    @GetMapping("/member-park-record-detail")
+    public String parkMemberRecordDetail() {
+        return "memberparkrecorddetail";
+    }
+
 }
