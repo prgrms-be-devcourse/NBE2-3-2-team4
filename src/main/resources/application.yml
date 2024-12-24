@@ -26,6 +26,7 @@ springdoc:
   swagger-ui:
     path: /test
 
+
 jwt:
   header: Authorization
   secret-key: ${SECRET_KEY}

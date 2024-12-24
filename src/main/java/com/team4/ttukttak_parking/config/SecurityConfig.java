@@ -30,6 +30,9 @@ public class SecurityConfig {
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
     private final TokenProvider tokenProvider;
+    private final String[] frontUrl = {
+        "/ttukttak-parking/**"
+    };
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
@@ -40,6 +43,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
+                    .requestMatchers(frontUrl).permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
