@@ -99,7 +99,7 @@ public record PkltResponse() {
         }
     }
 
-    public record getPKltTicketDetail(
+    public record PKltTicketDetail(
             String pkltName,//주차장 이름
             String address, //주차장 주소
             int pkltTime,//운영 시간
