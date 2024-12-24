@@ -4,7 +4,133 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>똑딱파킹</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Reset */
+    body, h1, p, a, button {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      background-color: #f8f9fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 400px; /* 기본 가로 크기 */
+      height: 800px; /* 세로를 2배로 확장 */
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .user-icon {
+      font-size: 1.5rem;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .card {
+      width: 80%; /* 카드의 너비 */
+      height: 200px; /* 카드 높이를 크게 조정 */
+      background-color: #f1f3f5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .greeting {
+      font-size: 1.8rem; /* 텍스트 크기 */
+      font-weight: bold; /* 강조 */
+      margin-bottom: 0.5rem;
+    }
+
+    .user-name {
+      font-weight: bold;
+      color: #007bff; /* 색상 추가 */
+    }
+
+    .question {
+      font-size: 1.3rem; /* 텍스트 크기 */
+      margin-top: 0.5rem;
+    }
+
+    .buy-ticket-button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .buy-ticket-button:hover {
+      background-color: #218838;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 1rem;
+      padding: 1rem;
+    }
+
+    .info {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .list-link {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .list-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -13,18 +139,24 @@
     <div class="user-icon">👤</div>
   </header>
   <main class="main">
-    <button class="back-button">&larr;</button>
     <div class="card">
       <p class="greeting">안녕하세요, <span class="user-name">홍길동</span> 님</p>
       <p class="question">주차권이 필요하신가요?</p>
-      <button class="buy-ticket-button">주차권 구매하기</button>
     </div>
-    <footer class="footer">
-      <p class="info">사용했던 주차권을 확인할 수 있어요</p>
-      <a href="#" class="list-link">목록 확인 하기 &gt;</a>
-    </footer>
+    <button class="buy-ticket-button">주차권 구매하기</button>
   </main>
+  <footer class="footer">
+    <p class="info">사용했던 주차권을 확인할 수 있어요</p>
+    <a href="#" class="list-link">목록 확인 하기 &gt;</a>
+  </footer>
 </div>
-<script src="script.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const userName = '홍길동'; // 유저 이름 설정
+    const userNameElement = document.querySelector('.user-name');
+    userNameElement.textContent = userName;
+  });
+</script>
 </body>
 </html>
+
