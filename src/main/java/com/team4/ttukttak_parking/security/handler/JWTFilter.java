@@ -8,16 +8,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Arrays;
+import org.springframework.web.util.UrlPathHelper;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,14 +30,16 @@ public class JWTFilter extends OncePerRequestFilter {
 
     // Request Header 에서 토큰 정보를 꺼내오기 위한 메소드
     private String resolveToken(String token) {
-        String jwt=null;
+        String jwt = null;
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
-            jwt=token.substring(7);
+            jwt = token.substring(7);
         }
         return jwt;
     }
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = request;
         String jwt = resolveToken(httpServletRequest.getHeader(AUTHORIZATION_HEADER));
 
@@ -49,19 +51,24 @@ public class JWTFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
             }
-        }
-        else{
+        } else {
             throw new JWTCustomException(ErrorCode.EMPTY_JWT_TOKEN);
         }
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        AntPathMatcher pathMatcher = new AntPathMatcher();
 
         String[] excludePath = {
-            "/api/auth/signup", "/api/auth/login", "/api/auth/reissue", "/api/auth/admin/signup"
+            "/api/auth/signup",
+            "/api/auth/login",
+            "/api/auth/reissue",
+            "/api/auth/admin/signup",
+            "/ttukttak-parking/**"
         };
-        String path = request.getRequestURI();
-        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+        String path = new UrlPathHelper().getPathWithinApplication(request);
+        return Arrays.stream(excludePath)
+            .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 }
