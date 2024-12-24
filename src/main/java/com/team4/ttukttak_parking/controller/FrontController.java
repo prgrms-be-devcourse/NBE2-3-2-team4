@@ -13,4 +13,30 @@ public class FrontController {
         return "main";
     }
 
+
+
+
+
+    @GetMapping("/buy-main")
+    public String parkBuyMainPage() {
+        return "parkbuymain";
+    }
+
+
+    @GetMapping("/member-park")
+    public String parkMember() {
+        return "memberpark";
+    }
+
+    @GetMapping("/member-park-record")
+    public String parkMemberRecord() {
+        return "memberparkrecord";
+    }
+
+
+    @GetMapping("/member-park-record-detail")
+    public String parkMemberRecordDetail() {
+        return "memberparkrecorddetail";
+    }
+
 }
