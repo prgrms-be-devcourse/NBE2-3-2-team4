@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>똑딱파킹 차량번호 관리</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 402px;
+            height: 874px;
+            max-width: 400px;
+            background: #fff;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .header span {
+            margin-left: 10px;
+        }
+
+        .car-list {
+            margin-bottom: 20px;
+        }
+
+        .car-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f1f3f5;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+        }
+
+        .car-item.selected {
+            background-color: #dbe4ff;
+        }
+
+        .car-item span {
+            font-size: 14px;
+        }
+
+        .car-item .star {
+            cursor: pointer;
+        }
+
+        .add-car {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px  #adb5bd;
+            border-radius: 5px;
+            color:#adb5bd
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4c6ef5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 80%;
+        }
+
+        .submit-btn:hover {
+            background-color: #364fc7;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="back-button" onclick="backToPage()">
+        ← 마이페이지
+    </div>
+    <div>
+        <h3>기본정보</h3>
+        <div class="car-list" id="car-list">
+        </div>
+        <div class="add-car">
+            <span>+</span>
+        </div>
+    </div>
+    <button class="submit-btn" onclick="submitCar()">차량 추가</button>
+</div>
+
+<script>
+
+    // 차량 데이터 가져오기
+    async function fetchCarData() {
+        try {
+            const jwtToken = "token"// 저장 방식에 따라 변경
+             // API 요청
+            const response = await fetch('http://localhost:8080/api/members/cars', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('문제가 있습니다.');
+            }
+            const data = await response.json();
+            // 데이터 렌더링
+            renderCarList(data);
+        } catch (error) {
+            console.error('데이터를 가져오는 중 문제가 발생했습니다:', error);
+        }
+    }
+
+    // 차량 데이터를 화면에 렌더링
+    async function renderCarList(data) {
+        const carList = document.getElementById('car-list'); // ID가 car-list인 요소 선택
+        carList.innerHTML = ''; // 기존 데이터를 초기화
+
+        Array.from(data.data).forEach((car, index) => {
+            const carItem = document.createElement('div');
+            carItem.classList.add('car-item');
+            if (car.isPrimaryCar) {
+                carItem.classList.add('selected');
+            }
+
+            carItem.innerHTML = `
+                <span>${car.carNum}</span>
+                <span class="star" onclick="toggleStar(${car.carId},${car.isPrimaryCar})">${car.isPrimaryCar ? '★' : '☆'}</span>
+            `;
+            carList.appendChild(carItem);
+        });
+    }
+
+    // 차량별 즐겨찾기 토글
+    async function toggleStar(carId, isPrimaryCar) {
+        try {
+            const jwtToken = "token"// 저장 방식에 따라 변경
+            // API 요청
+            
+            const url = `http://localhost:8080/api/members/cars/${carId}?status=${isPrimaryCar?'off':'on'}`;
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('문제가 있습니다.');
+            }
+            fetchCarData();
+        } catch (error) {
+            console.error('데이터를 가져오는 중 문제가 발생했습니다:', error);
+        }
+    }
+
+    // 차량 추가
+    function submitCar() {
+
+        window.location.href="carRegisteration.html";
+    }
+
+    function backToPage(){
+        window.location.href = "mypage.html";
+    }
+
+    // 페이지 로드 시 fetchCarData 호출
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchCarData();
+    });
+</script>
+</body>
+</html>

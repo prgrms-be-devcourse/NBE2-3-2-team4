@@ -20,7 +20,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +38,7 @@ public class SecurityConfig {
     private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
     private final TokenProvider tokenProvider;
     private final String[] frontUrl = {
-        "/ttukttak-parking/**"
+        "/ttukttak_parking/**"
     };
 
     @Bean
@@ -40,7 +47,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
             .headers((headerConfig) ->
                 headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
-            )
+            ).cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 관련
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
                     .requestMatchers(frontUrl).permitAll()
@@ -73,6 +80,20 @@ public class SecurityConfig {
             .requestMatchers(new AntPathRequestMatcher("/test"))
             .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**"))
             .requestMatchers(new AntPathRequestMatcher("/swagger-ui.html"));
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://127.0.0.1:3000")); // frontend url
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean
