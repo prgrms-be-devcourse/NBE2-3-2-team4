@@ -44,6 +44,16 @@ public class OrderService {
         final Ticket ticket = ticketRepository.findById(dto.ticketId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
 
+        // 주차권 중복 주문 예외처리
+        if (orderRepository.existsByCarNumAndAndStatus(dto.carNumber(), ParkingStatus.WAITING)) {
+            throw new BadRequestException(ErrorCode.ALREADY_ORDERED);
+        }
+
+        // 이미 주차중인 차량 예외처리
+        if (orderRepository.existsByCarNumAndAndStatus(dto.carNumber(), ParkingStatus.PARKING)) {
+            throw new BadRequestException(ErrorCode.PKLT_ALREADY_PARKED);
+        }
+
         Pklt pklt = ticket.getPklt();
 
         // 현재 기준 주차장 잔여자리 존재 예외처리

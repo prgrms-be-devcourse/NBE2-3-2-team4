@@ -44,9 +44,10 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
 
     //-6000: Order
     ORDER_NOT_FOUND(404, -6000, "주문을 찾을 수 없습니다"),
-    NOT_PARKED(400, -6001, "아직 입차하지 않은 차량입니다."),
-    PARKING_IN_PROGRESS(400, -6002, "아직 주차중입니다."),
-    ORDER_CANCEL_UNAVAILABLE(400,-6003,"주차권을 취소할 수 없습니다.");
+    ALREADY_ORDERED(400, -6001, "주차권이 이미 주문되었습니다."),
+    NOT_PARKED(400, -6002, "아직 입차하지 않은 차량입니다."),
+    PARKING_IN_PROGRESS(400, -6003, "아직 주차중입니다."),
+    ORDER_CANCEL_UNAVAILABLE(400,-6004,"주차권을 취소할 수 없습니다.");
 
 
     // 1. status = 날려줄 상태코드
