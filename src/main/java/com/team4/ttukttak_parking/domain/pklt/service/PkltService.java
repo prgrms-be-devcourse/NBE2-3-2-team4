@@ -12,12 +12,15 @@ import com.team4.ttukttak_parking.domain.pklt.repository.PkltRepository;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
+import com.team4.ttukttak_parking.domain.ticket.dto.TicketResponse;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
+import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -34,6 +37,7 @@ public class PkltService {
 
     private final PkltRepository pkltRepository;
     private final OrderRepository orderRepository;
+    private final TicketRepository ticketRepository;
 
     @Transactional(readOnly = true)
     public PkltResponse.GetPklt getPklt(Long pkltId) {
@@ -203,6 +207,25 @@ public class PkltService {
         return PkltResponse.ExitPklt.from(pkltId, carNum, ParkingStatus.EXITED,
             statusDetail.getStartTime().toLocalTime().toString(),
             currTime.toLocalTime().toString(), order.getTicket().getPrice(), lateFee);
+    }
+    @Transactional
+    public List<TicketResponse> getPkltTicketList(Long pkltId) {
+        // 주차장 ID로 주차장 정보 조회
+        Pklt pklt = pkltRepository.findById(pkltId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        // 해당 주차장의 주차권 리스트 조회
+        List<Ticket> tickets = ticketRepository.findByPklt(pklt);
+        //반환할 티켓 리스폰스 dto 리스트 생성
+        List<TicketResponse> ticketResponses = new ArrayList<>();
+
+        //dto리스폰스에 티캣 담기
+        for (Ticket ticket : tickets) {
+            ticketResponses.add(TicketResponse.from(ticket));
+        }
+
+        return ticketResponses;
+
     }
 }
 
