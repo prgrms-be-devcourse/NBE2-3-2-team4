@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -136,6 +138,15 @@ public class OrderService {
         //이미 주차 중이라면 출차해야 함. 주차권 취소 불가능.
         throw new BadRequestException(ErrorCode.ORDER_CANCEL_UNAVAILABLE);
 
+    }
+
+    public List<OrderResponse.OrderList> getOrderListByMemberId(String email) {
+
+        // 회원 email을 통해 구매한 주차권 목록 가져오기
+        List<OrderResponse.OrderList> lists = orderRepository.findOrderList(email)
+                     .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
+
+        return lists ;
     }
 
 
