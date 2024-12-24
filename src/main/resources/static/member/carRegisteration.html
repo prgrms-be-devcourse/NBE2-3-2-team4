@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량번호 등록</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            max-width: 480px;
+            background-color: #fff;
+            padding: 25px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .header img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            font-size: 12px;
+            color: #ff5a5a;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4a6cf7;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3b5edb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>똑딱파킹 🚗</h1>
+        </div>
+        <div class="back-button" onclick="backToPage()">
+            ← 차량번호 등록
+        </div>
+        <form>
+            <label for="car-number">차량번호</label>
+            <input type="text" id="car-number" placeholder="12가3456, 서울12가1234">
+            <div class="error">차량번호를 정확히 입력해주세요</div>
+            <div class="error">임시번호판 차량은 이용 불가합니다</div>
+            <button type="button" onclick="registerCarNumber()">등록</button>
+        </form>
+    </div>
+
+    <script>
+        async function registerCarNumber() {
+            const carNumber = document.getElementById("car-number").value;
+    
+            try {
+            const jwtToken = "token"// 저장 방식에 따라 변경
+             // API 요청
+            
+            const url = 'http://localhost:8080/api/members/cars';
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ carNum: carNumber })
+            });
+            if (!response.ok) {
+                throw new Error('문제가 있습니다.');
+            }
+            window.location.href = "carManagement.html";
+        } catch (error) {
+            console.error('데이터를 가져오는 중 문제가 발생했습니다:', error);
+        }
+
+
+        }
+
+        function backToPage(){
+            window.location.href = "carManagement.html";
+        }
+
+    </script>
+</body>
+</html>

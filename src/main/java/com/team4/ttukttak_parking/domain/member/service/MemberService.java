@@ -63,7 +63,7 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        member.updateMember(dto.contact(), dto.name());
+        member.updateMember(dto.name(),dto.contact());
 
         return null;
     }

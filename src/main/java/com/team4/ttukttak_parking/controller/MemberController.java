@@ -74,7 +74,7 @@ public class MemberController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")
     })
-    @PatchMapping("/cars/{id}")
+    @PutMapping("/cars/{id}")
     public ResponseEntity<ApiResponse<Object>> registerPrimary(@AuthenticationPrincipal User user,@PathVariable Long id ,@RequestParam(value = "status") String status ){
         memberService.updatePrimary(user.getUsername(),id, status);
         return ResponseEntity.ok().body(
