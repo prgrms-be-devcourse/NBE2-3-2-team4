@@ -10,13 +10,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Builder
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,4 +38,11 @@ public class Car {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    public static Car createCar(String carNum,Member member){
+        return Car.builder().carNum(carNum).isPrimaryCar(false).member(member).build();
+    }
+
+    public void updatePrimaryStatus(Boolean status){
+        this.isPrimaryCar = status;
+    }
 }
