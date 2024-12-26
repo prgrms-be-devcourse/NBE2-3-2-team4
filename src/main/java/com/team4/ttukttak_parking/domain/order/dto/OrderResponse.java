@@ -48,12 +48,16 @@ public record OrderResponse(
 
 
     public record OrderList(
+            Long pkltStatusDetailId,
             String carNum,
-            BigDecimal price,
-            DateFormat createdAt,
-            String pkltNm
+            int price,
+            String pkltNm,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+
+
     ) {
-//        public static OrderList from(String carNum, BigDecimal price, LocalDateTime createdAt,String pkltNm ) {
+//        public static OrderList from(String carNum, BigDecimal price, DateFormat createdAt,String pkltNm ) {
 //            return new OrderList(carNum, price, createdAt ,pkltNm);
 //        }
     }

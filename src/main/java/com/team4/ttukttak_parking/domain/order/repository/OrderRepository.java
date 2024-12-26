@@ -12,13 +12,15 @@ import org.springframework.data.repository.query.Param;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    boolean existsByCarNumAndAndStatus(String carNum, ParkingStatus status);
     Optional<Order> findByCarNumAndStatus(String carNum, ParkingStatus status);
 
-    @Query("select o.carNum, t.price, t.createdAt, p.pkltNm " +
+    @Query("select d.pkltStatusDetailId, o.carNum, t.price, p.pkltNm ,d.startTime,d.endTime " +
             "from Order o " +
             "inner join o.ticket t " +
+            "inner join o.statusDetail d " +
             "inner join t.pklt p " +
             "where o.member.email = :email")
-    Optional<List<OrderResponse.OrderList>> findOrderList(@Param("email") String email);
+    Optional<List<Object[]>> findOrderList(@Param("email") String email);
 
 }
