@@ -127,7 +127,7 @@ public record PkltResponse() {
                     car.getCarNum(),      // 차량 번호
                     pkltInfo.getAddPrkCrg(), // 추가 요금
                     pkltInfo.getAddPrkHr(),  // 추가 요금 단위 시간
-                    ticket.getPrice() + pkltInfo.getAddPrkCrg() // 총 금액
+                    ticket.getPrice()  // 총 금액
             );
 
         }
