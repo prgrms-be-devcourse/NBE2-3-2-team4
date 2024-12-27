@@ -8,9 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/ttukttak-parking")
 public class FrontController {
 
-    @GetMapping("/")
+    @GetMapping
     public String mainPage() {
         return "main";
+    }
+
+    @GetMapping("/search")
+    public String searchPage() {
+        return "/search/map";
     }
 
 }
