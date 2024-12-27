@@ -40,6 +40,7 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
+
         HttpServletRequest httpServletRequest = request;
         String jwt = resolveToken(httpServletRequest.getHeader(AUTHORIZATION_HEADER));
 
@@ -65,7 +66,7 @@ public class JWTFilter extends OncePerRequestFilter {
             "/api/auth/login",
             "/api/auth/reissue",
             "/api/auth/admin/signup",
-            "/ttukttak-parking/**"
+            "/ttukttak_parking/**"
         };
         String path = new UrlPathHelper().getPathWithinApplication(request);
         return Arrays.stream(excludePath)

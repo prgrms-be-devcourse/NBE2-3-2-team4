@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background-color: #fff;
+            height: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .header img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .back-button {
+            font-size: 14px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button::before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-item input {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .linked-account {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .linked-account span {
+            font-weight: bold;
+            color: green;
+        }
+
+        .car-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .logout {
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 10%;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4a6cf7;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3b5edb;
+        }
+
+        .car-info:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>똑딱파킹 🚗</h1>
+        </div>
+        <div class="back-button">내 정보 관리</div>
+
+        <div class="section-title">기본정보</div>
+        <div class="info-item">
+            <label for="name">이름</label>
+            <input type="text" id="name" >
+        </div>
+        <div class="info-item">
+            <label for="email">이메일</label>
+            <input type="email" id="email" readonly >
+        </div>
+        <div class="info-item">
+            <label for="phone">휴대폰 번호</label>
+            <input type="text" id="phone" >
+        </div>
+
+        <div class="section-title">차량정보</div>
+        <div class="car-info">
+            <span  onclick="navigateToCarInfo()"> 등록된 차량 정보 확인 〉 </span>
+        </div>
+
+        <div class="logout" onclick="logoutUser()">로그아웃 〉</div>
+        
+
+        <button onclick="editInfo()">수정</button>
+    </div>
+
+
+    <script>
+        async function fetchUserInfo() {
+            try {
+             
+                const jwtToken = "token"// 저장 방식에 따라 변경
+                 // API 요청
+                const response = await fetch('http://localhost:8080/api/members/info', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                }
+            
+            });
+
+            if (!response.ok) {
+                throw new Error('문제가 있습니다.');
+            }
+            const data = await response.json();
+
+                document.getElementById('name').value = data.data.name;
+                document.getElementById('email').value = data.data.email;
+                document.getElementById('phone').value = data.data.contact;
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        }
+
+        function navigateToCarInfo() {
+            console.log("차량정보 페이지로 이동합니다.");
+            window.location.href = "carManagement.html";
+        }
+
+        function logoutUser() {
+            console.log("로그아웃합니다.");
+            // 로그아웃 로직 구현
+        }
+
+        async function editInfo() {
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('phone').value;
+        
+            try {
+            const jwtToken = "token"// 저장 방식에 따라 변경
+            
+            const url = 'http://localhost:8080/api/members';
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name:name, contact: contact })
+                
+            });
+            
+            if (!response.ok) {
+                throw new Error('문제가 있습니다.');
+            }
+        
+            window.location.href = "";
+        } catch (error) {
+            console.error('데이터를 가져오는 중 문제가 발생했습니다:', error);
+        }
+        }
+
+        // 페이지 로드 시 사용자 정보 가져오기
+        document.addEventListener('DOMContentLoaded', fetchUserInfo);
+    </script>
+</body>
+</html>
