@@ -5,6 +5,7 @@ import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public record OrderResponse(
@@ -46,12 +47,15 @@ public record OrderResponse(
         Long orderId,
         String pkltNm,
         String carNum,
-        LocalDateTime startTime,
-        LocalDateTime endTime,
+        String time,
         int price
     ) {
         public static getOrderHistory from(Order order, Pklt pklt, Ticket ticket) {
-            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), ticket.getCreatedAt(), ticket.getCreatedAt().plusHours(ticket.getPkDuration()), ticket.getPrice());
+            LocalDateTime start = order.getCreatedAt();
+            LocalDateTime end = start.plusHours(ticket.getPkDuration());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd a h:mm");
+            String time = start.format(formatter) + " ~ " + end.format(formatter);
+            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), time, ticket.getPrice());
         }
     }
 }
