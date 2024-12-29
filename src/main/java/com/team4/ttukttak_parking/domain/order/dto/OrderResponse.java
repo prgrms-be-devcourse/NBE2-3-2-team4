@@ -41,4 +41,17 @@ public record OrderResponse(
                 addPrice, ticket.getPrice() + addPrice);
         }
     }
+
+    public record getOrderHistory(
+        Long orderId,
+        String pkltNm,
+        String carNum,
+        LocalDateTime startTime,
+        LocalDateTime endTime,
+        int price
+    ) {
+        public static getOrderHistory from(Order order, Pklt pklt, Ticket ticket) {
+            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), ticket.getCreatedAt(), ticket.getCreatedAt().plusHours(ticket.getPkDuration()), ticket.getPrice());
+        }
+    }
 }

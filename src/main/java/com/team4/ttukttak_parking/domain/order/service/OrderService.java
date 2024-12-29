@@ -17,13 +17,13 @@ import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -138,6 +138,17 @@ public class OrderService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<OrderResponse.getOrderHistory> getOrderHistory(String email) {
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
+        List<Order> orders = orderRepository.findALLByMember(member)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+
+        return orders.stream()
+                .map(order -> OrderResponse.getOrderHistory.from(order, order.getTicket().getPklt(), order.getTicket()))
+                .toList();
+    }
 }
 
