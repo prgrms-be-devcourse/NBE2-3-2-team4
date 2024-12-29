@@ -34,7 +34,7 @@
     function loadParkingData() {
       $('#loading').show();  // 로딩 표시
       // let token = localStorage.getItem('token');  // 로컬 스토리지에서 JWT 토큰 가져오기
-      let token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTiIsImV4cCI6MTczNTUwNDY3NX0.Rtyg68i8hMVw99XS4xAqRq31C-pTCwJ10J-uBCE2FVdaK0cJGma2xoMvZ8lo01bU3p31-fPR49RC7J4KaaAngQ';  // 테스트용 JWT 토큰
+      let token = 'token';  // 테스트용 JWT 토큰
       // AJAX 요청을 통해 서버에서 주차 데이터 가져오기
       $.ajax({
         url: '/api/orders/order-history',  // 서버에서 데이터를 받을 API 엔드포인트
