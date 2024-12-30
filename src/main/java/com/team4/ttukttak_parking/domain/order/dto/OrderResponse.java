@@ -25,21 +25,29 @@ public record OrderResponse(
 
     public record GetOrder(
         String pkltNm,
+        String addr,
         String carNum,
-        LocalDateTime startTime,
-        LocalDateTime endTime,
+        String startTime,
+        String endTime,
         int pkDuration,
         int price,
         int addPkDuration,
         int addPrice,
         int totalPrice
     ) {
-
         public static GetOrder from(Pklt pklt, Order order, PkltStatusDetail statusDetail,
             Ticket ticket, int addPkDuration, int addPrice) {
-            return new GetOrder(pklt.getPkltNm(), order.getCarNum(), statusDetail.getStartTime(),
-                statusDetail.getEndTime(), ticket.getPkDuration(), ticket.getPrice(), addPkDuration,
-                addPrice, ticket.getPrice() + addPrice);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h시 mm분");
+            String start = statusDetail.getStartTime().format(formatter);
+            String end = null;
+            if (statusDetail.getEndTime() != null) {
+                end = statusDetail.getEndTime().format(formatter);
+            } else {
+                end = "주차중";
+            }
+            return new GetOrder(pklt.getPkltNm(), pklt.getAddr(), order.getCarNum(), start,
+                    end, ticket.getPkDuration(), ticket.getPrice(), addPkDuration,
+                    addPrice, ticket.getPrice() + addPrice);
         }
     }
 
@@ -48,14 +56,15 @@ public record OrderResponse(
         String pkltNm,
         String carNum,
         String time,
+        int duration,
         int price
     ) {
         public static getOrderHistory from(Order order, Pklt pklt, Ticket ticket) {
             LocalDateTime start = order.getCreatedAt();
-            LocalDateTime end = start.plusHours(ticket.getPkDuration());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd a h:mm");
-            String time = start.format(formatter) + " ~ " + end.format(formatter);
-            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), time, ticket.getPrice());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h시 mm분");
+            String time = start.format(formatter);
+            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), time, ticket.getPkDuration(), ticket.getPrice());
         }
     }
+
 }

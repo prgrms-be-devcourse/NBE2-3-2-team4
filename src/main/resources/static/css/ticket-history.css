@@ -59,7 +59,7 @@ body {
             }
         }
     }
-    .parking-time-info {
+    .parking-time-info, .parking-duration  {
         display: flex;
         font-size: 13px;
         height: 20px;
