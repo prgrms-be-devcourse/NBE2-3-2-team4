@@ -39,7 +39,7 @@ public record OrderResponse(
             Ticket ticket, int addPkDuration, int addPrice) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h시 mm분");
             String start = statusDetail.getStartTime().format(formatter);
-            String end = null;
+            String end;
             if (statusDetail.getEndTime() != null) {
                 end = statusDetail.getEndTime().format(formatter);
             } else {
