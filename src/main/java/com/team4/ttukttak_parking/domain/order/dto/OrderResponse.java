@@ -56,6 +56,7 @@ public record OrderResponse(
         String pkltNm,
         String carNum,
         String time,
+        String status,
         int duration,
         int price
     ) {
@@ -63,7 +64,13 @@ public record OrderResponse(
             LocalDateTime start = order.getCreatedAt();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h시 mm분");
             String time = start.format(formatter);
-            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), time, ticket.getPkDuration(), ticket.getPrice());
+            String status = switch (order.getStatus().name()) {
+                case "WAITING" -> "주차 대기";
+                case "PARKING" -> "주차중";
+                case "CANCELED" -> "환불";
+                default -> "주차 완료";
+            };
+            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), time, status,ticket.getPkDuration(), ticket.getPrice());
         }
     }
 

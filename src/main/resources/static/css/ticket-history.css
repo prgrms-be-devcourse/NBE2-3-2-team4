@@ -89,6 +89,17 @@ body {
             filter: invert(31%) sepia(30%) saturate(302%) hue-rotate(175deg) brightness(91%) contrast(86%);
         }
     }
+    .parking-status {
+        display: flex;
+        font-size: 16px;
+        font-weight: bold;
+        height: 16px;
+        color: #4B5563;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 5px;
+        margin-bottom: 0;
+    }
     .details-button {
         display: flex;
         justify-content: flex-end;

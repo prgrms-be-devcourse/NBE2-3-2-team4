@@ -33,7 +33,7 @@
 <script>
   $(document).ready(function() {
     // const token = localStorage.getItem('token');  // 로컬 스토리지에서 JWT 토큰 가져오기
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTiIsImV4cCI6MTczNTU0MjA1M30.uUrYUtxac7UrhezXqE7Qr7TZ6oq7vo_6LISkcoCM5hf_fiF_VNO1_ZBcs8lKCLjH1resyyOj5xc_Y-xWUk8J2w';  // 테스트용 JWT 토큰
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTiIsImV4cCI6MTczNTU0NTM1N30.WUHOOlQQfWpRZrupvv2t1cBYG8z5_NfdVZjX9P_z-lFSZGnfD_hXZ1SKtvuuhpekAwREhrCpOG3mBUjbm6YETw';  // 테스트용 JWT 토큰
     loadParkingData();  // 페이지가 로드되면 데이터 로드 시작
     // 주차 데이터 로딩 함수
     function loadParkingData() {
@@ -47,8 +47,16 @@
         },
         success: function(body) {
           $('#loading').hide();  // 로딩 표시 숨기기
+
           // 받아온 데이터를 동적으로 페이지에 추가
-          body.data.reverse().forEach(function(parking) {
+          body.data.reverse().forEach(function (parking) {
+            // 주차 상태에 따라 버튼 표시 여부 결정
+            let detailBtn = (parking.status!=='환불' && parking.status!== '주차 대기') ? `
+            <div class="details-button">
+                <a href="ticket-order-detail?order=${parking.orderId}">상세 정보 확인 하기</a>
+            </div>` : ``;
+
+            // 주차 데이터를 페이지에 추가
             $('#ticket-history').append(`
               <div class="card">
                 <div class="parking-info">
@@ -70,8 +78,10 @@
                   <img src="../image/korean-won-svgrepo-com.svg" alt="Won Icon"/>
                   <p>${parking.price.toLocaleString()}</p><p style="font-size: 11px; margin-left: 2px">원</p>
                 </div>
-                <div class="details-button">
-                  <a href="ticket-order-detail?order=${parking.orderId}">상세 정보 확인 하기</a>
+                <div class="parking-status">
+                  <p><strong>${parking.status}</strong></p>
+                </div>
+                ${detailBtn}
                 </div>
               </div>
             `);

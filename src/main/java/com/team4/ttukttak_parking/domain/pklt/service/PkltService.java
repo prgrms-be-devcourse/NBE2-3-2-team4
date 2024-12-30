@@ -20,6 +20,7 @@ import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -196,7 +197,7 @@ public class PkltService {
         if (currTime.isAfter(exitTime)) {
             int min = pkltInfo.getAddPrkHr();
             int fee = pkltInfo.getAddPrkCrg();
-            int diff = (int) (currTime.toEpochSecond(null) - exitTime.toEpochSecond(null)) / 60;
+            int diff = (int) (currTime.toEpochSecond(ZoneOffset.UTC) - exitTime.toEpochSecond(ZoneOffset.UTC)) / 60;
             lateFee = (diff / min) * fee;
         }
 
