@@ -49,6 +49,8 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
     PARKING_IN_PROGRESS(400, -6003, "아직 주차중입니다."),
     ORDER_CANCEL_UNAVAILABLE(400,-6004,"주차권을 취소할 수 없습니다."),
 
+    //-7000 Car
+    CAR_NOT_PRIMARY(403,-7000,"해당 차량은 대표 차량이 아닙니다");
     //-7000 : Car
     CAR_NOT_FOUND(400,-6005,"차량 정보를 찾을 수 없습니다.");
 
