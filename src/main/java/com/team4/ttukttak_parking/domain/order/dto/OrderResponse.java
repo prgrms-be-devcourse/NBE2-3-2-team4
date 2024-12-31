@@ -6,6 +6,10 @@ import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import java.time.LocalDateTime;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+
 
 public record OrderResponse(
 
@@ -41,4 +45,21 @@ public record OrderResponse(
                 addPrice, ticket.getPrice() + addPrice);
         }
     }
+
+
+    public record OrderList(
+            Long pkltStatusDetailId,
+            String carNum,
+            int price,
+            String pkltNm,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+
+
+    ) {
+//        public static OrderList from(String carNum, BigDecimal price, DateFormat createdAt,String pkltNm ) {
+//            return new OrderList(carNum, price, createdAt ,pkltNm);
+//        }
+    }
+
 }

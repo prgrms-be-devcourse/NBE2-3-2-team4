@@ -51,6 +51,8 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
 
     //-7000 Car
     CAR_NOT_PRIMARY(403,-7000,"해당 차량은 대표 차량이 아닙니다");
+    //-7000 : Car
+    CAR_NOT_FOUND(400,-6005,"차량 정보를 찾을 수 없습니다.");
 
 
     // 1. status = 날려줄 상태코드

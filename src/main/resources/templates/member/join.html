@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        header img {
+            height: 30px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 span {
+            margin-left: 5px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin: 0;
+        }
+        .cbutton {
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .cbutton:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>뚝딱파킹 🚗</h1>
+            <button aria-label="사용자 계정">👤</button>
+        </header>
+        <main>
+            <form>
+                <section>
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" placeholder="이메일을 입력하세요" required>
+                </section>
+                <section>
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" placeholder="비밀번호를 입력하세요" required>
+                </section>
+                <section>
+                    <label for="name">이름</label>
+                    <input type="text" id="name" placeholder="이름을 입력하세요" required>
+                </section>
+                <section>
+                    <label for="phone">휴대폰 번호</label>
+                    <input type="tel" id="phone" placeholder="전화번호를 입력하세요" required>
+                </section>
+                <section class="checkbox-group">
+                    <input type="checkbox" id="terms1" required>
+                    <label for="terms1">이용약관 동의</label>
+                </section>
+                <section class="checkbox-group">
+                    <input type="checkbox" id="terms2">
+                    <label for="terms2">이용약관 동의</label>
+                </section>
+                <button class="cbutton" type="submit">회원가입</button>
+            </form>
+        </main>
+        <footer>
+            <p>&copy; 2024 뚝딱파킹. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
