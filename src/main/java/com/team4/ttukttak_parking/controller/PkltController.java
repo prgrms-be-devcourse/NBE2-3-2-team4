@@ -98,8 +98,6 @@ public class PkltController {
             .body(ApiResponse.createSuccess(pkltService.exitPklt(carNum, pkltId)));
     }
 
-
-
     @Operation(summary = "주차장별 주차권 리스트 조회", description = "주차장별 주차권 리스트를 조회합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})

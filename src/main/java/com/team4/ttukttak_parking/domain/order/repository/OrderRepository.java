@@ -1,5 +1,6 @@
 package com.team4.ttukttak_parking.domain.order.repository;
 
+import com.team4.ttukttak_parking.domain.member.entity.Member;
 import com.team4.ttukttak_parking.domain.order.dto.OrderResponse;
 import com.team4.ttukttak_parking.domain.order.entity.Order;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
@@ -14,6 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     boolean existsByCarNumAndAndStatus(String carNum, ParkingStatus status);
     Optional<Order> findByCarNumAndStatus(String carNum, ParkingStatus status);
+    Optional<List<Order>> findALLByMember(Member member);
 
     @Query("select d.pkltStatusDetailId, o.carNum, t.price, p.pkltNm ,d.startTime,d.endTime " +
             "from Order o " +

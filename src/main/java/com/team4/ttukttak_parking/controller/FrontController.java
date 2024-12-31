@@ -44,7 +44,5 @@ public class FrontController {
     }
 
     @GetMapping("/ticket-order-detail")
-    public String ticketOrderDetail() {
-        return "ticket-order-detail";
-    }
+    public String ticketOrderDetail() { return "ticket-order-detail"; }
 }

@@ -21,13 +21,13 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -145,6 +145,13 @@ public class OrderService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<OrderResponse.getOrderHistory> getOrderHistory(String email) {
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        List<Order> orders = orderRepository.findALLByMember(member)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
     public List<OrderResponse.OrderList> getOrderListByMemberId(String email) {
 
 
@@ -167,6 +174,9 @@ public class OrderService {
         return lists;
     }
 
-
+        return orders.stream()
+                .map(order -> OrderResponse.getOrderHistory.from(order, order.getTicket().getPklt(), order.getTicket()))
+                .toList();
+    }
 }
 
