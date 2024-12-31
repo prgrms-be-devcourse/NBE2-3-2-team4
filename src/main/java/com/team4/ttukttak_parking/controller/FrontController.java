@@ -16,7 +16,6 @@ public class FrontController {
 
 
 
-
     @GetMapping("/buy-main")
     public String parkBuyMainPage() {
         return "parkbuymain";
@@ -39,4 +38,13 @@ public class FrontController {
         return "memberparkrecorddetail";
     }
 
+    @GetMapping("/ticket-history")
+    public String ticketHistory() {
+        return "ticket-history";
+    }
+
+    @GetMapping("/ticket-order-detail")
+    public String ticketOrderDetail() {
+        return "ticket-order-detail";
+    }
 }
