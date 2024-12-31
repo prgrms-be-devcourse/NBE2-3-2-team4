@@ -107,4 +107,18 @@ public class PkltController {
         return ResponseEntity.ok()
                 .body(ApiResponse.createSuccess(pkltService.getPkltTicketList(pkltId)));
     }
+
+
+
+    @Operation(summary = "주차권 결제 정보 확인", description = "주차권 결제 전에 주차권 결제 정보 확인합니다")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("/api/pklt/{pkltId}/ticket/{ticketId}")
+    public ResponseEntity<ApiResponse<PkltResponse.PKltTicketDetail>> getPkltTicketsDetail(
+            @PathVariable Long pkltId,
+            @PathVariable Long ticketId,
+            @RequestParam Long memberId) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.createSuccess(pkltService.getPKltTicketDetail(pkltId, ticketId, memberId)));
+    }
 }
