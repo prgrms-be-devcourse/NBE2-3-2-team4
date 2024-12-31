@@ -35,3 +35,4 @@ jwt:
 kakao:
   api:
     key:${KAKAO_API_KEY}
+  token-validity-in-seconds: 360000

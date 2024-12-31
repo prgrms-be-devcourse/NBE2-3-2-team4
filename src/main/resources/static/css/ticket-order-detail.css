@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    padding: 0;
+    background-color: white;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    font-size: 25px;
+    font-weight: bold;
+    img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.pre-arrow  {
+    margin: 5px 0 3rem 5px;
+    img {
+        width: 30px;
+        height: 30px;
+    }
+}
+.card {
+    width: 90%;
+    max-width: 370px;
+    margin: 20px auto;
+    padding: 15px 15px;
+    background: #F9FAFB;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .parking-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        .car-num-space {
+            display: flex;
+            margin-right: 5px;
+            color: #7C7C7C;
+            img {
+                filter: invert(52%) sepia(12%) saturate(17%) hue-rotate(333deg) brightness(90%) contrast(98%);
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .fee-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        height: 30px;
+
+        .time-fee {
+            color: #4B5563;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+    .total-fee-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        height: 25px;
+        .total-fee {
+            color: #4B5563;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
+}
+
+.container {
+    margin: 0 20px;
+
+    div {
+        display: flex;
+        align-items: center;
+        height: 35px;
+
+        img {
+            filter: invert(30%) sepia(10%) saturate(986%) hue-rotate(176deg) brightness(94%) contrast(80%);
+        }
+        .enter-exit {
+            font-size: 17px;
+            font-weight: bold;
+            color: #4B5563;
+        }
+        .parking-info-detail {
+            margin-left: 15px;
+            font-size: 16px;
+            font-weight: normal;
+        }
+    }
+}

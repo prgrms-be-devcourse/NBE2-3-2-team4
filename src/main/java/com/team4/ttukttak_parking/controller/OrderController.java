@@ -15,6 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
@@ -45,6 +47,16 @@ public class OrderController {
             .body(ApiResponse.createSuccess(orderService.getOrder(orderId)));
     }
 
+    @Operation(summary = "회원별 주차권 구매 기록 조회 API", description = "회원별 주차권 구매기록 리스트를 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("/orderlist")
+    public ResponseEntity<ApiResponse<List<OrderResponse.OrderList>>> getOrderListByMemberId(
+        @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok()
+            .body(ApiResponse.createSuccess(orderService.getOrderListByMemberId(user.getUsername())));
+    }
+
 
     @Operation(summary = "주차권 취소 요청 API", description = "주차권 취소를 요청합니다.")
     @ApiResponses({
@@ -53,6 +65,16 @@ public class OrderController {
     public ResponseEntity<ApiResponse<String>> cancelTicket(@AuthenticationPrincipal User user, @PathVariable Long orderId){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.createSuccess(orderService.cancelTicket(user.getUsername(),orderId)));
+    }
+
+    @Operation(summary = "주차권 구매 기록 조회 API", description = "주차권 구매 기록을 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
+    @GetMapping("/order-history")
+    public ResponseEntity<ApiResponse<List<OrderResponse.getOrderHistory>>> getOrderHistory(
+        @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.createSuccess(orderService.getOrderHistory(user.getUsername())));
     }
 
 }

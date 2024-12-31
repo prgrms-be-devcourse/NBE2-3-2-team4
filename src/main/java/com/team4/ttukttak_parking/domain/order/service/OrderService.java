@@ -15,15 +15,22 @@ import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
 import com.team4.ttukttak_parking.global.exception.BadRequestException;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -138,6 +145,38 @@ public class OrderService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<OrderResponse.getOrderHistory> getOrderHistory(String email) {
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
+        List<Order> orders = orderRepository.findALLByMember(member)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+    public List<OrderResponse.OrderList> getOrderListByMemberId(String email) {
+
+
+        // 회원 email을 통해 구매한 주차권 목록 가져오기
+        List<OrderResponse.OrderList> lists = (List<OrderResponse.OrderList>) orderRepository.findOrderList(email)
+                .map(rows -> rows.stream()
+                        .map(row -> new OrderResponse.OrderList(
+                                (Long) row[0],                          //pkltStatusDetailId
+                                (String) row[1],                                    // carNum
+                                (int) row[2],                                // price
+                                (String) row[3] ,                       // pkltNm
+                                (LocalDateTime) row[4],                                 // startTime
+                                (LocalDateTime) row[5]                               // endTime
+
+                        ))
+                        .collect(Collectors.toList())
+                )
+                .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
+
+        return lists;
+    }
+
+        return orders.stream()
+                .map(order -> OrderResponse.getOrderHistory.from(order, order.getTicket().getPklt(), order.getTicket()))
+                .toList();
+    }
 }
 

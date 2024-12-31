@@ -3,6 +3,8 @@ package com.team4.ttukttak_parking.domain.pklt.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team4.ttukttak_parking.domain.member.entity.Car;
+import com.team4.ttukttak_parking.domain.member.repository.CarRepository;
 import com.team4.ttukttak_parking.domain.order.entity.Order;
 import com.team4.ttukttak_parking.domain.order.repository.OrderRepository;
 import com.team4.ttukttak_parking.domain.pklt.dto.PkltResponse;
@@ -15,11 +17,13 @@ import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.dto.TicketResponse;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import com.team4.ttukttak_parking.domain.ticket.repository.TicketRepository;
+import com.team4.ttukttak_parking.global.exception.AccessDeniedException;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -38,6 +42,7 @@ public class PkltService {
     private final PkltRepository pkltRepository;
     private final OrderRepository orderRepository;
     private final TicketRepository ticketRepository;
+    private final CarRepository carRepository;
 
     @Transactional(readOnly = true)
     public PkltResponse.GetPklt getPklt(Long pkltId) {
@@ -196,7 +201,7 @@ public class PkltService {
         if (currTime.isAfter(exitTime)) {
             int min = pkltInfo.getAddPrkHr();
             int fee = pkltInfo.getAddPrkCrg();
-            int diff = (int) (currTime.toEpochSecond(null) - exitTime.toEpochSecond(null)) / 60;
+            int diff = (int) (currTime.toEpochSecond(ZoneOffset.UTC) - exitTime.toEpochSecond(ZoneOffset.UTC)) / 60;
             lateFee = (diff / min) * fee;
         }
 
@@ -227,6 +232,33 @@ public class PkltService {
         return ticketResponses;
 
     }
+
+    @Transactional(readOnly = true)
+    public PkltResponse.PKltTicketDetail getPKltTicketDetail(Long pkltId,Long ticketId,Long memberId){
+        // 1. 주차장 정보 조회
+        Pklt pklt = pkltRepository.findById(pkltId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PKLT_NOT_FOUND));
+
+        PkltInfo pkltInfo = pklt.getPkltInfo();
+
+        // 2. 주차권 정보 조회
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
+
+        // 3. 사용자의 차량 정보 조회
+        Car car = carRepository.findByMemberMemberIdAndIsPrimaryCar(memberId, true)
+                .orElseThrow(() -> new AccessDeniedException(ErrorCode.CAR_NOT_PRIMARY));
+
+        // 4. 추가 요금 및 총 요금 계산
+        int addFee = pkltInfo.getAddPrkCrg(); // 추가 요금
+        int addHour = pkltInfo.getAddPrkHr(); // 추가 요금 단위 시간
+        int totalFee = ticket.getPrice();
+
+        // 5. DTO 생성
+        return PkltResponse.PKltTicketDetail.from(pklt, pkltInfo, ticket, car);
+
+    }
+
 }
 
 

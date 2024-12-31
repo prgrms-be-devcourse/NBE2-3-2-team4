@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/ticket-order-detail.css}">
+  <title>뚝딱파킹</title>
+
+</head>
+<body>
+  <div class="header">
+    <div>뚝딱파킹 🚗</div>
+    <a href="#">
+      <img src="../image/person.svg" alt="User Icon">
+    </a>
+  </div>
+  <div class="main">
+    <div class="pre-arrow">
+      <a href="ticket-history">
+        <img src="../image/arrow-left-short.svg" alt="pre site"/>
+      </a>
+    </div>
+    <div class="card">
+      <div class="parking-info">
+        <div id="pkltNm" class="parking-name"></div>
+        <div class="car-num-space">
+          <img src="../image/car-front-fill.svg" alt="User Icon"/>
+          <p id="carNum" class="car-num"></p>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div>
+        <img src="../image/geo-alt-fill.svg"  alt="pre site"/>
+        <p id="pkltAddr" class="parking-info-detail"></p>
+      </div>
+      <div>
+        <p class="enter-exit"><strong>입</strong></p>
+        <p id="startTime" class="parking-info-detail"></p>
+      </div>
+      <div>
+        <p class="enter-exit"><strong>출</strong></p>
+        <p id="endTime" class="parking-info-detail"></p>
+      </div>
+    </div>
+    <div class="card">
+      <div id="pkDuration-space" class="fee-info">
+        <p class="time-fee">기본 시간</p>
+        <p id="pkDuration" class="time-fee"></p>
+      </div>
+      <div id="price-space" class="fee-info">
+        <p class="time-fee">기본 이용료</p>
+        <p id="price" class="time-fee"></p>
+      </div>
+      <div id="addDuration-space" class="fee-info">
+        <p class="time-fee">추가 시간</p>
+        <p id="addDuration" class="time-fee"></p>
+      </div>
+      <div id="addPrice-space" class="fee-info">
+        <p class="time-fee">추가 이용료</p>
+        <p id="addPrice" class="time-fee"></p>
+      </div>
+      <hr>
+      <div class="total-fee-info">
+        <p class="total-fee">총 이용료</p>
+        <p id="totalPrice" class="total-fee"></p>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // const token = localStorage.getItem('jwtToken'); // 로컬스토리지에서 JWT 토큰 가져오기
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTiIsImV4cCI6MTczNTU0NTM1N30.WUHOOlQQfWpRZrupvv2t1cBYG8z5_NfdVZjX9P_z-lFSZGnfD_hXZ1SKtvuuhpekAwREhrCpOG3mBUjbm6YETw';  // 테스트용 JWT 토큰
+
+    // URL에서 Order Id 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('order');
+
+    // 주차 상세 정보 로드
+    if (orderId) {
+      loadParkingDetails(orderId);
+    }
+
+    // 데이터 로딩 함수
+    function loadParkingDetails(orderId) {
+      $.ajax({
+        url: `/api/orders/${orderId}`, // 요청할 API 엔드포인트
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ` + token // JWT 토큰 추가
+        },
+        success: function (body) {
+            const data = body.data;
+          // 성공적으로 데이터를 받아왔을 때 페이지에 추가
+            $('#pkltNm').text(data.pkltNm);
+            $('#carNum').text(data.carNum);
+            $('#pkltAddr').text(data.addr);
+            $('#startTime').text(data.startTime);
+            $('#endTime').text(data.endTime);
+            $('#pkDuration').text(data.pkDuration + '시간');
+            $('#price').text(data.price.toLocaleString() + '원');
+            // 추가 요금이 없을 경우 추가 요금 정보 숨기기
+            if (data.addPrice === 0) {
+                $('#addDuration-space').hide();
+                $('#addPrice-space').hide();
+            } else {
+              // 추가 요금이 있을 경우 추가 요금 정보 추가
+              if (data.addPkDuration >= 60) {
+                // 추가 주차 시간이 60분 이상일 경우 시간 단위로 변환
+                $('#addDuration').text(Math.floor(data.addPkDuration / 60) + '시간 ' + data.addPkDuration % 60 + '분');
+              } else {
+                $('#addDuration').text(data.addPkDuration + '분');
+              }
+              $('#addPrice').text(data.addPrice + '원');
+            }
+            $('#totalPrice').text(data.totalPrice.toLocaleString() + '원');
+        },
+        error: function () {
+          alert('데이터를 불러오는 데 실패했습니다.');
+        }
+      });
+    }
+  });
+</script>
+</html>

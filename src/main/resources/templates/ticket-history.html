@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/ticket-history.css}">
+  <title>뚝딱파킹</title>
+
+</head>
+<body>
+<div class="header">
+  <div>뚝딱파킹 🚗</div>
+  <a href="#">
+    <img src="../image/person.svg" alt="User Icon">
+  </a>
+</div>
+<div class="main">
+  <div class="pre-arrow">
+    <a href="#">
+      <img src="../image/arrow-left-short.svg" alt="pre site"/>
+    </a>
+  </div>
+  <div class="title">사용했던 주차권이에요</div>
+  <div id="ticket-history">
+    <!-- 데이터 입력 부분 -->
+  </div>
+
+  <!-- Loading spinner -->
+  <div id="loading" style="display:none;">Loading...</div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // const token = localStorage.getItem('token');  // 로컬 스토리지에서 JWT 토큰 가져오기
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTiIsImV4cCI6MTczNTU0NTM1N30.WUHOOlQQfWpRZrupvv2t1cBYG8z5_NfdVZjX9P_z-lFSZGnfD_hXZ1SKtvuuhpekAwREhrCpOG3mBUjbm6YETw';  // 테스트용 JWT 토큰
+    loadParkingData();  // 페이지가 로드되면 데이터 로드 시작
+    // 주차 데이터 로딩 함수
+    function loadParkingData() {
+      $('#loading').show();  // 로딩 표시
+     // AJAX 요청을 통해 서버에서 주차 데이터 가져오기
+      $.ajax({
+        url: '/api/orders/order-history',  // 서버에서 데이터를 받을 API 엔드포인트
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token  // JWT 토큰을 Authorization 헤더에 추가
+        },
+        success: function(body) {
+          $('#loading').hide();  // 로딩 표시 숨기기
+
+          // 받아온 데이터를 동적으로 페이지에 추가
+          body.data.reverse().forEach(function (parking) {
+            // 주차 상태에 따라 버튼 표시 여부 결정
+            let detailBtn = (parking.status!=='환불' && parking.status!== '주차 대기') ? `
+            <div class="details-button">
+                <a href="ticket-order-detail?order=${parking.orderId}">상세 정보 확인 하기</a>
+            </div>` : ``;
+
+            // 주차 데이터를 페이지에 추가
+            $('#ticket-history').append(`
+              <div class="card">
+                <div class="parking-info">
+                  <div class="parking-name">${parking.pkltNm}</div>
+                  <div class="car-num-space">
+                    <img src="../image/car-front-fill.svg" alt="Car Icon"/>
+                    <p class="car-num">${parking.carNum}</p>
+                  </div>
+                </div>
+                <div class="parking-duration">
+                  <img src="../image/ticket-perforated.svg" alt="Ticket Icon"/>
+                  <p>${parking.duration} 시간권</p>
+                </div>
+                <div class="parking-time-info">
+                  <img src="../image/clock-fill.svg" alt="Clock Icon"/>
+                  <p>${parking.time}</p>
+                </div>
+                <div class="parking-fee">
+                  <img src="../image/korean-won-svgrepo-com.svg" alt="Won Icon"/>
+                  <p>${parking.price.toLocaleString()}</p><p style="font-size: 11px; margin-left: 2px">원</p>
+                </div>
+                <div class="parking-status">
+                  <p><strong>${parking.status}</strong></p>
+                </div>
+                ${detailBtn}
+                </div>
+              </div>
+            `);
+          });
+        },
+        error: function() {
+          $('#loading').hide();  // 로딩 표시 숨기기
+          alert("데이터를 로드하는 데 실패했습니다.");
+        }
+      });
+    }
+  });
+</script>
+</html>
