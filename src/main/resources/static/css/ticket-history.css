@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    padding: 0;
+    background-color: white;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    font-size: 25px;
+    font-weight: bold;
+    img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.pre-arrow  {
+    margin: 5px 0 0 5px;
+    img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0 10px 10px;
+}
+
+.card {
+    width: 90%;
+    max-width: 370px;
+    margin: 20px auto;
+    padding: 15px 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .parking-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        .car-num-space {
+            display: flex;
+            margin-right: 5px;
+            color: #7C7C7C;
+            img {
+                filter: invert(52%) sepia(12%) saturate(17%) hue-rotate(333deg) brightness(90%) contrast(98%);
+                margin-right: 5px;
+            }
+        }
+    }
+    .parking-time-info {
+        display: flex;
+        font-size: 13px;
+        height: 20px;
+        color: #4B5563;
+        font-weight: bold;
+        align-items: center;
+        margin-bottom: 10px;
+        img {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            filter: invert(31%) sepia(30%) saturate(302%) hue-rotate(175deg) brightness(91%) contrast(86%);
+        }
+    }
+    .parking-fee {
+        display: flex;
+        font-size: 13px;
+        height: 20px;
+        font-weight: bold;
+        color: #000000;
+        align-items: center;
+        margin-bottom: 0;
+        img {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            filter: invert(31%) sepia(30%) saturate(302%) hue-rotate(175deg) brightness(91%) contrast(86%);
+        }
+    }
+    .details-button {
+        display: flex;
+        justify-content: flex-end;
+        a {
+            font-size: 12px;
+            font-weight: bold;
+            color: #6B7280;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+    }
+}

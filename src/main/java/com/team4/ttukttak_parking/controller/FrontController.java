@@ -14,5 +14,13 @@ public class FrontController {
     }
 
 
+    @GetMapping("/ticket-history")
+    public String ticketHistory() {
+        return "ticket-history";
+    }
 
+    @GetMapping("/ticket-order-detail")
+    public String ticketOrderDetail() {
+        return "ticket-order-detail";
+    }
 }
