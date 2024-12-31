@@ -13,6 +13,7 @@ public class FrontController {
         return "main";
     }
 
+
     @GetMapping("/ticket-history")
     public String ticketHistory() {
         return "ticket-history";
