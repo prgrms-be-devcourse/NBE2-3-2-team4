@@ -34,7 +34,7 @@ public class SecurityConfig {
         "/ttukttak-parking/**"
     };
     private final String[] allowedUrl = {
-        "/api/kakao/search", "/api/auth/**"
+        "/api/kakao/search", "/api/auth/**", "/api/pklt/**"
     };
 
     @Bean

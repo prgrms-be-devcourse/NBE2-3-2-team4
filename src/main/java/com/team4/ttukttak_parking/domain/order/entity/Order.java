@@ -1,6 +1,7 @@
 package com.team4.ttukttak_parking.domain.order.entity;
 
 import com.team4.ttukttak_parking.domain.member.entity.Member;
+import com.team4.ttukttak_parking.domain.order.entity.enums.PayStatus;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;

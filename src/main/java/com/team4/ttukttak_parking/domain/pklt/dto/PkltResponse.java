@@ -25,6 +25,7 @@ public record PkltResponse() {
 
     public record GetNearbyPklt(
         Long pkltId,
+        String pkltNm,
         BigDecimal latitude,
         BigDecimal longitude,
         String status
@@ -32,7 +33,7 @@ public record PkltResponse() {
 
         public static GetNearbyPklt from(com.team4.ttukttak_parking.domain.pklt.entity.Pklt pklt,
             String status) {
-            return new GetNearbyPklt(pklt.getPkltId(), pklt.getLat(), pklt.getLot(), status);
+            return new GetNearbyPklt(pklt.getPkltId(), pklt.getPkltNm(), pklt.getLat(), pklt.getLot(), status);
         }
     }
 

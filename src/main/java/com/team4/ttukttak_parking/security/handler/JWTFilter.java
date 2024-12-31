@@ -66,7 +66,8 @@ public class JWTFilter extends OncePerRequestFilter {
             "/api/auth/reissue",
             "/api/auth/admin/signup",
             "/ttukttak-parking/**",
-            "/api/kakao/search"
+            "/api/kakao/search",
+                "/api/pklt/**"
         };
 
         String path = new UrlPathHelper().getPathWithinApplication(request);

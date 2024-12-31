@@ -57,7 +57,7 @@ public class PkltService {
 
     @Transactional(readOnly = true)
     public List<PkltResponse.GetNearbyPklt> getNearbyPklt(BigDecimal lat, BigDecimal lng) {
-        double KM = 0.3;
+        double KM = 0.5;
         double lngDifference = KM / 111 / (Math.cos(lat.doubleValue()));
 
         Predicate<Pklt> latFilter = pklt ->
