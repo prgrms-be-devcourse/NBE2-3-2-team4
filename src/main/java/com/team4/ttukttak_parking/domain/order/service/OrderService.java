@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,11 +46,11 @@ public class OrderService {
     public OrderResponse.CreateOrder createOrder(CreateOrder dto, String email) {
         // 회원 검색
         final Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // 해당 주차권 검색
         final Ticket ticket = ticketRepository.findById(dto.ticketId())
-            .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.TICKET_NOT_FOUND));
 
         // 주차권 중복 주문 예외처리
         if (orderRepository.existsByCarNumAndAndStatus(dto.carNumber(), ParkingStatus.WAITING)) {
@@ -73,27 +74,27 @@ public class OrderService {
 
         // 주차권 주문 생성 (주차 대기 상태로 생성, 입차 시 주차중 상태로 변경)
         orderRepository.save(
-            Order.to(dto.carNumber(), ticket, member));
+                Order.to(dto.carNumber(), ticket, member));
 
         // 주차 현황 주차 차량수 추가
         pkltStatus.updateNowPrkVhclCnt();
 
         return OrderResponse.CreateOrder.from(
-            ticket.getTicketId(), member.getMemberId(), dto.carNumber());
+                ticket.getTicketId(), member.getMemberId(), dto.carNumber());
     }
 
     @Transactional(readOnly = true)
     public OrderResponse.GetOrder getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
 
         Ticket ticket = order.getTicket();
         Pklt pklt = ticket.getPklt();
         PkltStatusDetail statusDetail = Optional.ofNullable(order.getStatusDetail())
-            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_PARKED));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_PARKED));
 
         LocalDateTime endTime = Optional.ofNullable(statusDetail.getEndTime())
-            .orElse(LocalDateTime.now());
+                .orElse(LocalDateTime.now());
         long minutes = Duration.between(statusDetail.getStartTime(), endTime).toMinutes();
 
         int basePkDuration = ticket.getPkDuration() * 60;
@@ -105,7 +106,7 @@ public class OrderService {
 
         int addPrice = calculateAdditionalPrice(pklt, addPkDuration);
         return OrderResponse.GetOrder.from(pklt, order, statusDetail, ticket, addPkDuration,
-            addPrice);
+                addPrice);
     }
 
     private int calculateAdditionalPrice(Pklt pklt, int addPkDuration) {
@@ -115,14 +116,14 @@ public class OrderService {
 
 
     @Transactional
-    public String cancelTicket(String email,Long orderId){
-        Order order = orderRepository.findById(orderId).orElseThrow(()-> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+    public String cancelTicket(String email, Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
 
-        if(!order.getMember().getEmail().equals(email)){
+        if (!order.getMember().getEmail().equals(email)) {
             throw new BadRequestException(ErrorCode.BAD_REQUEST);
         }
         //주차 전에만 취소 가능
-        if(order.getStatus()== ParkingStatus.WAITING) {
+        if (order.getStatus() == ParkingStatus.WAITING) {
             //주차권 구매 후 10분 지나기 전
             if (order.getCreatedAt().plusMinutes(10).isAfter(LocalDateTime.now())) {
                 //상태 변경 & 주차 현황 수 감소
@@ -132,7 +133,7 @@ public class OrderService {
                 return "전액 환불되었습니다.";
             }
             //구매 후 10분 지남.
-            else{
+            else {
                 //상태 변경 & 주차 현황 수 감소
                 order.updateParkingStatus(ParkingStatus.CANCELED);
                 order.getTicket().getPklt().getPkltStatus().decreaseNowPrkVhclCnt();
@@ -148,21 +149,27 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderResponse.getOrderHistory> getOrderHistory(String email) {
         Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         List<Order> orders = orderRepository.findALLByMember(member)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+
+        return orders.stream()
+                .map(order -> OrderResponse.getOrderHistory.from(order, order.getTicket().getPklt(), order.getTicket()))
+                .toList();
+    }
+
     public List<OrderResponse.OrderList> getOrderListByMemberId(String email) {
 
 
         // 회원 email을 통해 구매한 주차권 목록 가져오기
-        List<OrderResponse.OrderList> lists = (List<OrderResponse.OrderList>) orderRepository.findOrderList(email)
+        List<OrderResponse.OrderList> lists = orderRepository.findOrderList(email)
                 .map(rows -> rows.stream()
                         .map(row -> new OrderResponse.OrderList(
                                 (Long) row[0],                          //pkltStatusDetailId
                                 (String) row[1],                                    // carNum
                                 (int) row[2],                                // price
-                                (String) row[3] ,                       // pkltNm
+                                (String) row[3],                       // pkltNm
                                 (LocalDateTime) row[4],                                 // startTime
                                 (LocalDateTime) row[5]                               // endTime
 
@@ -174,9 +181,5 @@ public class OrderService {
         return lists;
     }
 
-        return orders.stream()
-                .map(order -> OrderResponse.getOrderHistory.from(order, order.getTicket().getPklt(), order.getTicket()))
-                .toList();
-    }
 }
 

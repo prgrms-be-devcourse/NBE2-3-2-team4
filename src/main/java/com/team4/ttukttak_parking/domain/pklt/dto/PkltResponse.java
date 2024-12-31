@@ -27,7 +27,7 @@ public record PkltResponse() {
     }
 
     public record GetNearbyPklt(
-=        Long pkltId,
+        Long pkltId,
         String pkltNm,
         BigDecimal latitude,
         BigDecimal longitude,

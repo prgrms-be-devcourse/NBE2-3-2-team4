@@ -68,7 +68,7 @@ public class JWTFilter extends OncePerRequestFilter {
             "/api/auth/admin/signup",
             "/ttukttak-parking/**",
             "/api/kakao/search",
-                "/api/pklt/**"
+                "/api/pklt/**",
             "/ttukttak_parking/**"
         };
 
