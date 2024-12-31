@@ -40,6 +40,9 @@ public class SecurityConfig {
     private final String[] frontUrl = {
         "/ttukttak_parking/**"
     };
+    private final String[] allowedUrl = {
+        "/api/kakao/search", "/api/auth/**", "/api/pklt/**"
+    };
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
@@ -51,7 +54,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
                     .requestMatchers(frontUrl).permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers(allowedUrl).permitAll()
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
