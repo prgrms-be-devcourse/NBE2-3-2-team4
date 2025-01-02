@@ -15,20 +15,20 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-
-    @Value("${spring.graphql.cors.allowed-origins}")
-    private String[] allowOrigins;
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-            .allowedOriginPatterns(allowOrigins)
-            .allowedHeaders("*")
-            .allowedMethods("GET", "POST", "PUT", "DELETE")
-            .allowCredentials(true)
-            .maxAge(3000);
-
-    }
+//
+//    @Value("${spring.graphql.cors.allowed-origins}")
+//    private String[] allowOrigins;
+//
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/api/**")
+//            .allowedOriginPatterns(allowOrigins)
+//            .allowedHeaders("*")
+//            .allowedMethods("GET", "POST", "PUT", "DELETE")
+//            .allowCredentials(true)
+//            .maxAge(3000);
+//
+//    }
 
 
 

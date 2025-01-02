@@ -8,8 +8,10 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.Arrays;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -39,7 +41,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-        FilterChain filterChain) throws ServletException, IOException {
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         HttpServletRequest httpServletRequest = request;
         String jwt = resolveToken(httpServletRequest.getHeader(AUTHORIZATION_HEADER));
@@ -62,18 +64,17 @@ public class JWTFilter extends OncePerRequestFilter {
         AntPathMatcher pathMatcher = new AntPathMatcher();
 
         String[] excludePath = {
-            "/api/auth/signup",
-            "/api/auth/login",
-            "/api/auth/reissue",
-            "/api/auth/admin/signup",
-            "/ttukttak-parking/**",
-            "/api/kakao/search",
+                "/api/auth/signup",
+                "/api/auth/login",
+                "/api/auth/reissue",
+                "/api/auth/admin/signup",
+                "/ttukttak-parking/**",
+                "/api/kakao/search",
                 "/api/pklt/**",
-            "/ttukttak_parking/**"
         };
 
         String path = new UrlPathHelper().getPathWithinApplication(request);
         return Arrays.stream(excludePath)
-            .anyMatch(pattern -> pathMatcher.match(pattern, path));
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 }

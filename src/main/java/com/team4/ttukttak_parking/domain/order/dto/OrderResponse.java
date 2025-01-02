@@ -57,7 +57,7 @@ public record OrderResponse(
 
     public record getOrderHistory(
         Long orderId,
-        String pkltNm,
+        Long pkltId,
         String carNum,
         String time,
         String status,
@@ -74,7 +74,7 @@ public record OrderResponse(
                 case "CANCELED" -> "환불";
                 default -> "주차 완료";
             };
-            return new getOrderHistory(order.getOrderId(), pklt.getPkltNm(), order.getCarNum(), time, status,ticket.getPkDuration(), ticket.getPrice());
+            return new getOrderHistory(order.getOrderId(), pklt.getPkltId(), order.getCarNum(), time, status,ticket.getPkDuration(), ticket.getPrice());
         }
     }
 
