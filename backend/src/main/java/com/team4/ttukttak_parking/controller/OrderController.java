@@ -37,7 +37,7 @@ public class OrderController {
             .body(ApiResponse.createSuccess(orderService.createOrder(dto, user.getUsername())));
     }
 
-    @Operation(summary = "주차권 주문 결제 성공 API", description = "주차권 결제 성공 시 상태 변경")
+    @Operation(summary = "주차권 주문 결제 성공 API", description = "주차권 결제 성공 시 상태 변경합니다")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")})
     @PutMapping("/{payId}/success")
