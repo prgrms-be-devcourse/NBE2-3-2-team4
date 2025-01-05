@@ -2,21 +2,15 @@ package com.team4.ttukttak_parking.domain.order.entity;
 
 import com.team4.ttukttak_parking.domain.member.entity.Member;
 import com.team4.ttukttak_parking.domain.order.entity.enums.PayStatus;
-import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatusDetail;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.enums.ParkingStatus;
 import com.team4.ttukttak_parking.domain.ticket.entity.Ticket;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -46,7 +40,10 @@ public class Order {
     @JoinColumn(name = "pklt_status_detail_id")
     private PkltStatusDetail statusDetail;
 
+    @Enumerated(EnumType.STRING)
+    PayStatus payStatus;
 
+    private String payId;
 
     @Enumerated(EnumType.STRING)
     private ParkingStatus status;
@@ -54,13 +51,15 @@ public class Order {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public static Order to(String carNum, Ticket ticket, Member member) {
+    public static Order to(String paymentId, String carNum, Ticket ticket, Member member) {
         return Order.builder()
-            .carNum(carNum)
-            .ticket(ticket)
-            .member(member)
-            .status(ParkingStatus.WAITING)
-            .build();
+                .payId(paymentId)
+                .carNum(carNum)
+                .ticket(ticket)
+                .member(member)
+                .status(ParkingStatus.WAITING)
+                .payStatus(PayStatus.WAITING)
+                .build();
     }
 
     public void enterPklt(PkltStatusDetail statusDetail) {
@@ -68,7 +67,11 @@ public class Order {
         this.status = ParkingStatus.PARKING;
     }
 
-    public void updateParkingStatus(ParkingStatus parkingStatus){
+    public void updateParkingStatus(ParkingStatus parkingStatus) {
         this.status = parkingStatus;
+    }
+
+    public void updatePayStatus(PayStatus status) {
+        this.payStatus = status;
     }
 }

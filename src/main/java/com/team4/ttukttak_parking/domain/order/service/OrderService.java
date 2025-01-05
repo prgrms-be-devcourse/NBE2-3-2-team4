@@ -5,6 +5,7 @@ import com.team4.ttukttak_parking.domain.member.repository.MemberRepository;
 import com.team4.ttukttak_parking.domain.order.dto.OrderRequest.CreateOrder;
 import com.team4.ttukttak_parking.domain.order.dto.OrderResponse;
 import com.team4.ttukttak_parking.domain.order.entity.Order;
+import com.team4.ttukttak_parking.domain.order.entity.enums.PayStatus;
 import com.team4.ttukttak_parking.domain.order.repository.OrderRepository;
 import com.team4.ttukttak_parking.domain.pklt.entity.Pklt;
 import com.team4.ttukttak_parking.domain.pkltstatus.entity.PkltStatus;
@@ -73,13 +74,13 @@ public class OrderService {
         int total = ticket.getPrice(); // 현재는 할인 혜택 없음
 
         // 주차권 주문 생성 (주차 대기 상태로 생성, 입차 시 주차중 상태로 변경)
-        orderRepository.save(
-                Order.to(dto.carNumber(), ticket, member));
+        Order order = orderRepository.save(
+                Order.to(dto.paymentId(), dto.carNumber(), ticket, member));
 
         // 주차 현황 주차 차량수 추가
         pkltStatus.updateNowPrkVhclCnt();
 
-        return OrderResponse.CreateOrder.from(
+        return OrderResponse.CreateOrder.from(order.getOrderId(),
                 ticket.getTicketId(), member.getMemberId(), dto.carNumber());
     }
 
@@ -114,6 +115,14 @@ public class OrderService {
         return (int) ((double) addPkDuration / 5 * price5Minute);
     }
 
+    @Transactional
+    public Long completePay(String payId) {
+        Order order = orderRepository.findByPayId(payId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+
+        order.updatePayStatus(PayStatus.COMPLETE);
+        return order.getOrderId();
+    }
 
     @Transactional
     public String cancelTicket(String email, Long orderId) {
@@ -128,6 +137,7 @@ public class OrderService {
             if (order.getCreatedAt().plusMinutes(10).isAfter(LocalDateTime.now())) {
                 //상태 변경 & 주차 현황 수 감소
                 order.updateParkingStatus(ParkingStatus.CANCELED);
+                order.updatePayStatus(PayStatus.COMPLETE);
                 order.getTicket().getPklt().getPkltStatus().decreaseNowPrkVhclCnt();
                 //환불~
                 return "전액 환불되었습니다.";
@@ -136,6 +146,7 @@ public class OrderService {
             else {
                 //상태 변경 & 주차 현황 수 감소
                 order.updateParkingStatus(ParkingStatus.CANCELED);
+                order.updatePayStatus(PayStatus.COMPLETE);
                 order.getTicket().getPklt().getPkltStatus().decreaseNowPrkVhclCnt();
                 //환불~
                 return "구매 후 10분 이상이 경과되어 이용 금액의 50% 환불되었습니다.";
@@ -144,6 +155,18 @@ public class OrderService {
         //이미 주차 중이라면 출차해야 함. 주차권 취소 불가능.
         throw new BadRequestException(ErrorCode.ORDER_CANCEL_UNAVAILABLE);
 
+    }
+
+    @Transactional
+    public Void deleteOrder(String id) {
+        Order order = orderRepository.findByPayId(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
+        PkltStatus pkltStatus = order.getTicket().getPklt().getPkltStatus();
+
+        pkltStatus.exitPkltCnt();
+
+        orderRepository.delete(order);
+        return null;
     }
 
     @Transactional(readOnly = true)

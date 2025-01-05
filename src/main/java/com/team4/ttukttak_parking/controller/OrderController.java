@@ -37,6 +37,15 @@ public class OrderController {
             .body(ApiResponse.createSuccess(orderService.createOrder(dto, user.getUsername())));
     }
 
+    @Operation(summary = "주차권 주문 결제 성공 API", description = "주차권 결제 성공 시 상태 변경")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")})
+    @PutMapping("/{payId}/success")
+    public ResponseEntity<ApiResponse<Long>> completePay(@PathVariable String payId) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.createSuccess(orderService.completePay(payId)));
+    }
+
     @Operation(summary = "주차권 구매 기록 상세 조회 API", description = "주차권 구매 세부 기록을 조회합니다.")
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")})
@@ -65,6 +74,12 @@ public class OrderController {
     public ResponseEntity<ApiResponse<String>> cancelTicket(@AuthenticationPrincipal User user, @PathVariable Long orderId){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.createSuccess(orderService.cancelTicket(user.getUsername(),orderId)));
+    }
+
+    @DeleteMapping("/{payId}")
+    public ResponseEntity<ApiResponse<Void>> cancelTicket(@PathVariable String payId){
+        return ResponseEntity.ok()
+                .body(ApiResponse.createSuccess(orderService.deleteOrder(payId)));
     }
 
     @Operation(summary = "주차권 구매 기록 조회 API", description = "주차권 구매 기록을 조회합니다.")

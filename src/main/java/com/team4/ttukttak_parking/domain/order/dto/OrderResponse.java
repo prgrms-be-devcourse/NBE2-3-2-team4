@@ -17,13 +17,14 @@ public record OrderResponse(
 ) {
 
     public record CreateOrder(
+            Long orderId,
         Long ticketId,
         Long memberId,
         String carNum
     ) {
 
-        public static CreateOrder from(Long ticketId, Long memberId, String carNum) {
-            return new CreateOrder(ticketId, memberId, carNum);
+        public static CreateOrder from(Long orderId, Long ticketId, Long memberId, String carNum) {
+            return new CreateOrder(orderId, ticketId, memberId, carNum);
         }
     }
 
