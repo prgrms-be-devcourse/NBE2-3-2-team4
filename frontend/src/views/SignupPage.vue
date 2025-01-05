@@ -79,9 +79,10 @@ export default {
         if (response) {
           alert('회원가입이 완료되었습니다.');
           this.$router.push('/login');
-        }
+        } 
       } catch (error) {
         alert('회원가입에 실패했습니다.');
+        
       }
     },
     validateForm() {
@@ -108,11 +109,11 @@ export default {
 
 <style scoped>
 .signup-page {
-  position: fixed;
+  position: relative;
   width: 100%;
   background-color: #ffffff;
   min-height: 100vh;
-  top: 13%;
+  padding-top: 28%;
 }
 
 .section-title {

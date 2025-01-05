@@ -14,10 +14,10 @@
               <i class="fas fa-user"></i>
               내 정보 수정
             </button>
-            <button class="menu-button">
-              <i class="fas fa-car"></i>
-              내 차량 관리
-            </button>
+<!--            <button class="menu-button">-->
+<!--              <i class="fas fa-car"></i>-->
+<!--              내 차량 관리-->
+<!--            </button>-->
           </div>
           
           <div class="menu-group">
