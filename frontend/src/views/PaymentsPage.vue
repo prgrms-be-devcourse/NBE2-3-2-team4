@@ -117,6 +117,7 @@ const onLoadKakaoMap = (mapRef) => {
 
 
 onMounted(async () => {
+    await getUserInfo();
     await loadData();
     await getPkltInfo();
     await getPklt();
@@ -130,6 +131,17 @@ const loadData = async () => {
     carNumber.value = store.state.carNumber || '';
     isLoading.value = false;
     addTime.value = ref(new Date(new Date().getTime() + (ticket.value.pkDuration * 60 * 60 * 1000) + 10*60*1000).toLocaleString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }));
+};
+
+const userInfo = ref({});
+const getUserInfo = async () => {
+    const response = await axios.get('/api/members/info');
+    if(response) {
+        userInfo.value = response.data;   
+    } else {
+        alert('로그인 후 결제가 가능합니다.');
+        router.push('/login');
+    }
 };
 
 const showConfirmation = () => {

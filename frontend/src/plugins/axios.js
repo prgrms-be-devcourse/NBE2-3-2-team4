@@ -79,7 +79,9 @@ instance.interceptors.response.use(
     if (error.response && error.response.data) {
       const errorData = error.response.data;
       console.error('[ERROR] status: ', errorData.status, " message: " , errorData.message);
-      alert(errorData.message);
+      if ( errorData.message === '해당 이메일이 이미 존재합니다.')  {
+        alert(errorData.message);
+      }
     } else {
       console.error('서버 연결 실패:', error.message);
     }

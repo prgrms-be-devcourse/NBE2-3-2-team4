@@ -338,8 +338,9 @@ const handleStatusClick = (parking) => {
     }
 };
 
-const selectedTicket = ref(null);
 
+
+const selectedTicket = ref(null);
 const handlePayment = (carNumber) => {
     if (!selectedTicket.value) {
         alert('주차권을 선택해 주세요.');  // 주차권 선택 확인
@@ -357,8 +358,8 @@ const handlePayment = (carNumber) => {
 }
 
 const processPayment = (SelectedParking, SelectedTicket, carNumber) => {
+
     // 결제 처리 로직
-    console.log('결제 처리 로직', SelectedParking, SelectedTicket, carNumber);
     // Vuex 스토어에 결제 정보 저장
     store.dispatch('setPaymentInfo', { 
         selectedParking: SelectedParking,  // 객체 자체 저장
