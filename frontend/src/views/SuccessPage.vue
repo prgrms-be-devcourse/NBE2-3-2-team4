@@ -83,25 +83,25 @@
             return;
         }
 
-        if (code === '전액환불') { 
+        else if (code === '전액환불') { 
             const orderId = urlParams.get('orderId');
             await axios.put(`/api/orders/${orderId}/cancel`);
             isCanceled.value = true;
         }
 
-        if (code === '50%환불') { 
+         else if (code === '50%환불') { 
             const orderId = urlParams.get('orderId');
             await axios.put(`/api/orders/${orderId}/cancel`);
             price.value = urlParams.get('price');
             isCanceled.value = true;
         }
 
-        if(code === '환불') {
+        else if(code === '환불') {
             const orderId = urlParams.get('orderId');
             await axios.put(`/api/orders/${orderId}/cancel`);
             price.value = urlParams.get('price');
             isPayCancel.value = true;
-        }
+        } else {
 
         // 기존 성공 로직
         const response = await axios.put(`/api/orders/${payId}/success`);
@@ -111,7 +111,7 @@
         } else {
             isSuccess.value = false;
             await axios.delete(`/api/orders/${payId}`);
-        }
+        }}
     });
 </script>
 
