@@ -79,6 +79,7 @@ instance.interceptors.response.use(
     if (error.response && error.response.data) {
       const errorData = error.response.data;
       console.error('[ERROR] status: ', errorData.status, " message: " , errorData.message);
+      alert(errorData.message);
     } else {
       console.error('서버 연결 실패:', error.message);
     }
