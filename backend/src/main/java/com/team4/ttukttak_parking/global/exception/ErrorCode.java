@@ -51,9 +51,10 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
 
     //-7000 Car
     CAR_NOT_PRIMARY(403,-7000,"해당 차량은 대표 차량이 아닙니다"),
-    //-7000 : Car
-    CAR_NOT_FOUND(400,-6005,"차량 정보를 찾을 수 없습니다.");
+    CAR_NOT_FOUND(400,-7001,"차량 정보를 찾을 수 없습니다."),
 
+    //-8000: TossPayment
+    INVALID_PAYMENT_AMOUNT(400, -8000, "금액이 일치하지 않습니다.");
 
     // 1. status = 날려줄 상태코드
     // 2. code = 해당 오류가 어느부분과 관련있는지 카테고리화 해주는 코드. 예외 원인 식별하기 편하기에 추가
