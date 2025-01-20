@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByCarNumAndStatus(String carNum, ParkingStatus status);
     Optional<List<Order>> findALLByMember(Member member);
 
-    Optional<Order> findByPayId(String payId);
+    Optional<Order> findByOrderNumber(String orderNumber);
     @Query("select d.pkltStatusDetailId, o.carNum, t.price, p.pkltNm ,d.startTime,d.endTime " +
             "from Order o " +
             "inner join o.ticket t " +

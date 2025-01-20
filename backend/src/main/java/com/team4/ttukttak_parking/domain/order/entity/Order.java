@@ -43,17 +43,20 @@ public class Order {
     @Enumerated(EnumType.STRING)
     PayStatus payStatus;
 
-    private String payId;
-
     @Enumerated(EnumType.STRING)
     private ParkingStatus status;
+
+    private String orderNumber;
+    private LocalDateTime paymentDate;
+    private String paymentKey;
+    private Long totalAmount;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public static Order to(String paymentId, String carNum, Ticket ticket, Member member) {
+    public static Order to(String orderNumber, String carNum, Ticket ticket, Member member) {
         return Order.builder()
-                .payId(paymentId)
+                .orderNumber(orderNumber)
                 .carNum(carNum)
                 .ticket(ticket)
                 .member(member)
@@ -73,5 +76,11 @@ public class Order {
 
     public void updatePayStatus(PayStatus status) {
         this.payStatus = status;
+    }
+
+    public void updatePaymentInfo(String paymentKey, Long totalAmount, LocalDateTime paymentDate) {
+        this.paymentKey = paymentKey;
+        this.totalAmount = totalAmount;
+        this.paymentDate = paymentDate;
     }
 }
