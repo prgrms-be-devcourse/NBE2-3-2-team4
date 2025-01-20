@@ -207,7 +207,7 @@ public class PkltService {
 
         statusDetail.exit(currTime);
         order.setStatus(ParkingStatus.EXITED);
-        pklt.getPkltStatus().exitPkltCnt();
+        pklt.getPkltStatus().decreaseNowPrkVhclCnt();
 
         return PkltResponse.ExitPklt.from(pkltId, carNum, ParkingStatus.EXITED,
             statusDetail.getStartTime().toLocalTime().toString(),

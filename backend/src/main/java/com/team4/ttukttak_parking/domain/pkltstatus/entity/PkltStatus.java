@@ -37,19 +37,20 @@ public class PkltStatus {
 
     public static PkltStatus to(JsonNode data) {
         return PkltStatus.builder()
-            .tpkct(data.get("tpkct").asInt())
-            .nowPrkVhclCnt(data.get("now_prk_vhcl_cnt").asInt())
-            .build();
+                .tpkct(data.get("tpkct").asInt())
+                .nowPrkVhclCnt(data.get("now_prk_vhcl_cnt").asInt())
+                .build();
     }
 
     public void fixStreetPklt() {
         this.tpkct += 1;
     }
 
-    public void updateNowPrkVhclCnt() {
+    public void increaseNowPrkVhclCnt() {
         this.nowPrkVhclCnt += 1;
     }
 
-    public void exitPkltCnt() { this.nowPrkVhclCnt -= 1; }
-    public void decreaseNowPrkVhclCnt(){this.nowPrkVhclCnt-=1;}
+    public void decreaseNowPrkVhclCnt() {
+        this.nowPrkVhclCnt -= 1;
+    }
 }

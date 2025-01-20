@@ -36,3 +36,7 @@ kakao:
   api:
     key:${KAKAO_API_KEY}
   token-validity-in-seconds: 360000
+
+toss-payment:
+  secret-key: ${TOSS_PAYMENT_SECRET_KEY}
+

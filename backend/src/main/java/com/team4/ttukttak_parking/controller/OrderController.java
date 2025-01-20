@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 @Slf4j
-@Tag(name = "Order API", description = "주차권 주문 관련 API")
+@Tag(name = "🎫Order", description = "주차권 주문 관련 API")
 public class OrderController {
 
     private final OrderService orderService;
@@ -40,10 +40,10 @@ public class OrderController {
     @Operation(summary = "주차권 주문 결제 성공 API", description = "주차권 결제 성공 시 상태 변경합니다")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공")})
-    @PutMapping("/{payId}/success")
-    public ResponseEntity<ApiResponse<Long>> completePay(@PathVariable String payId) {
+    @PutMapping("/{orderNumber}/success")
+    public ResponseEntity<ApiResponse<Long>> completePay(@PathVariable String orderNumber) {
         return ResponseEntity.ok()
-                .body(ApiResponse.createSuccess(orderService.completePay(payId)));
+                .body(ApiResponse.createSuccess(orderService.completePay(orderNumber)));
     }
 
     @Operation(summary = "주차권 구매 기록 상세 조회 API", description = "주차권 구매 세부 기록을 조회합니다.")
@@ -76,10 +76,10 @@ public class OrderController {
                 .body(ApiResponse.createSuccess(orderService.cancelTicket(user.getUsername(),orderId)));
     }
 
-    @DeleteMapping("/{payId}")
-    public ResponseEntity<ApiResponse<Void>> cancelTicket(@PathVariable String payId){
+    @DeleteMapping("/{orderNumber}")
+    public ResponseEntity<ApiResponse<Void>> cancelTicket(@PathVariable String orderNumber){
         return ResponseEntity.ok()
-                .body(ApiResponse.createSuccess(orderService.deleteOrder(payId)));
+                .body(ApiResponse.createSuccess(orderService.deleteOrder(orderNumber)));
     }
 
     @Operation(summary = "주차권 구매 기록 조회 API", description = "주차권 구매 기록을 조회합니다.")

@@ -17,9 +17,6 @@ import com.team4.ttukttak_parking.global.exception.BadRequestException;
 import com.team4.ttukttak_parking.global.exception.ErrorCode;
 import com.team4.ttukttak_parking.global.exception.NotFoundException;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -75,10 +71,10 @@ public class OrderService {
 
         // 주차권 주문 생성 (주차 대기 상태로 생성, 입차 시 주차중 상태로 변경)
         Order order = orderRepository.save(
-                Order.to(dto.paymentId(), dto.carNumber(), ticket, member));
+                Order.to(dto.orderNumber(), dto.carNumber(), ticket, member));
 
         // 주차 현황 주차 차량수 추가
-        pkltStatus.updateNowPrkVhclCnt();
+        pkltStatus.increaseNowPrkVhclCnt();
 
         return OrderResponse.CreateOrder.from(order.getOrderId(),
                 ticket.getTicketId(), member.getMemberId(), dto.carNumber());
@@ -116,8 +112,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Long completePay(String payId) {
-        Order order = orderRepository.findByPayId(payId)
+    public Long completePay(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
 
         order.updatePayStatus(PayStatus.COMPLETE);
@@ -158,12 +154,12 @@ public class OrderService {
     }
 
     @Transactional
-    public Void deleteOrder(String id) {
-        Order order = orderRepository.findByPayId(id)
+    public Void deleteOrder(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ORDER_NOT_FOUND));
         PkltStatus pkltStatus = order.getTicket().getPklt().getPkltStatus();
 
-        pkltStatus.exitPkltCnt();
+        pkltStatus.decreaseNowPrkVhclCnt();
 
         orderRepository.delete(order);
         return null;
