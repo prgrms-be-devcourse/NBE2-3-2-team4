@@ -9,4 +9,11 @@ public record TosspaymentRequest() {
 
     }
 
+    public record PaymentConfirmation(
+            String orderNumber,
+            String paymentKey,
+            String amount
+    ) {
+
+    }
 }

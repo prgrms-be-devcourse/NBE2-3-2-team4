@@ -54,7 +54,11 @@ public enum ErrorCode { // 예외 발생시, body에 실어 날려줄 상태, co
     CAR_NOT_FOUND(400,-7001,"차량 정보를 찾을 수 없습니다."),
 
     //-8000: TossPayment
-    INVALID_PAYMENT_AMOUNT(400, -8000, "금액이 일치하지 않습니다.");
+    INVALID_PAYMENT_AMOUNT(400, -8000, "금액이 일치하지 않습니다."),
+    TOSS_PAYMENT_CONFIRM_REQUEST_ERROR(400, -8001, "토스페이먼츠 결제 승인 통신 오류가 발생했습니다."),
+    INVALID_PAYMENT_RESPONSE_JSON(400, -8002, "결제 승인 응답 값 파싱 오류가 발생했습니다."),
+    TOSS_PAYMENT_CANCEL_REQUEST_ERROR(400, -8003, "토스페이먼츠 결제 취소 통신 오류가 발생했습니다.");
+
 
     // 1. status = 날려줄 상태코드
     // 2. code = 해당 오류가 어느부분과 관련있는지 카테고리화 해주는 코드. 예외 원인 식별하기 편하기에 추가

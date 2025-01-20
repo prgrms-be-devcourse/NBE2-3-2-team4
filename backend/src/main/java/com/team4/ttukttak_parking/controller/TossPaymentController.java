@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/toss-payments")
 @Slf4j
-@Tag(name = "💲TossPayment API", description = "토스 결제 관련 API")
+@Tag(name = "💲TossPayment", description = "토스 결제 관련 API")
 public class TossPaymentController {
 
     private final TossPaymentService tossPaymentService;
@@ -63,8 +63,8 @@ public class TossPaymentController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "승인 성공")})
     @PostMapping("/confirm")
-    public ResponseEntity<?> getConfirm() {
-
-        return ResponseEntity.ok().body(ApiResponse.createSuccessWithNoData());
+    public ResponseEntity<ApiResponse<Long>> confirmPayment(@RequestBody TosspaymentRequest.PaymentConfirmation requestDto) {
+        Long orderId = tossPaymentService.confirmPayment(requestDto);
+        return ResponseEntity.ok().body(ApiResponse.createSuccess(orderId));
     }
 }
